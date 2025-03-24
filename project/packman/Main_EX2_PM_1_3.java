@@ -34,6 +34,7 @@ public class Main_EX2_PM_1_3 {
         }
 
         Main_EX2_PM_1_2.print(star);
+        Main_EX2_PM_1_4.packman_Direction(star,1,'*');
 
         scanner.close();
     }
