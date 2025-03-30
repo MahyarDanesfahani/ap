@@ -26,7 +26,8 @@ public class Main_EX3_LM_1_2 {
                 System.out.println("2. Add Students");
                 System.out.println("3. Show Books");
                 System.out.println("4. Show Students");
-                System.out.println("5. Save Data to File");
+                System.out.println("5. search Students");
+                System.out.println("6. Save Data to File");
                 System.out.println("0. Exit");
                 System.out.print("Enter your choice : ");
                 choice = scanner.nextInt();
@@ -46,6 +47,9 @@ public class Main_EX3_LM_1_2 {
                         showStudents();
                         break;
                     case 5:
+                        searchStudentByName(scanner);
+                        break;
+                    case 6:
                         saveBooksToFile();
                         saveStudentsToFile();
                         break;
@@ -132,6 +136,26 @@ public class Main_EX3_LM_1_2 {
         System.out.println("\nList of Students : ");
         for (int i = 0; i < studentCount; i++) {
             System.out.println((i + 1) + ". " + Student[i][0] + " " + Student[i][1] + " - " + Student[i][3] + " (ID: " + Student[i][2] + ")");
+        }
+    }
+
+    public static void searchStudentByName(Scanner scanner) {
+        System.out.print("Enter the first name of the student to search : ");
+        String searchName = scanner.nextLine().trim();
+        boolean found = false;
+        for (int i = 0; i < studentCount; i++) {
+            if (Student[i][0].equalsIgnoreCase(searchName)) {
+                System.out.println("\nStudent Found : ");
+                System.out.println("First Name : " + Student[i][0]);
+                System.out.println("Last Name : " + Student[i][1]);
+                System.out.println("Student Number : " + Student[i][2]);
+                System.out.println("Field of Study : " + Student[i][3]);
+                System.out.println("Phone Number : " + Student[i][4]);
+                found = true;
+            }
+        }
+        if (!found) {
+            System.out.println("No student found with the name : " + searchName);
         }
     }
 
