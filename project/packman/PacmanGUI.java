@@ -11,7 +11,11 @@ import java.util.Random;
         Point pacmanPoint = new Point();
         final int width = 300, height = 300, boxSize = 5;
         static int direction = 1;
-        int score = 0;
+        static int score = 0;
+        final static int MAX_SCORE = 5;
+        final static long MAX_TIME = 60 * 1000;
+        long startTime;
+        boolean gameOver = false;
         final int LEFT = 1, RIGHT = 2, TOP = 3, BOTTOM = 4;
         Point dotPoint = new Point();
 
@@ -20,6 +24,7 @@ import java.util.Random;
             pacmanPoint.setLocation((width / boxSize) / 2, (height / boxSize) / 2);
             getNewDotPointLocation();
             setSize(width, height);
+            startTime = System.currentTimeMillis();
         }
 
         @Override
@@ -45,16 +50,32 @@ import java.util.Random;
 
         private void drawScore(Graphics2D g2d) {
             g2d.setColor(Color.BLACK);
-            String s = "Score: " + score;
+            long currentTime = System.currentTimeMillis();
+            long timeElapsedSec = (currentTime - startTime) / 1000;
+            String s = "Score : " + score + " | Time : " + timeElapsedSec + " s ";
             g2d.drawString(s, 25, 50);
         }
 
         private void logic() {
+            if (gameOver) return;
+            long currentTime = System.currentTimeMillis();
+            long elapsedTime = currentTime - startTime;
+
+            if (elapsedTime > MAX_TIME) {
+                JOptionPane.showMessageDialog(this, "Game time is up . \nTime allowed " + (MAX_TIME / 1000) + "Seconds . ");
+                System.exit(0);
+            }
+            if (score >= MAX_SCORE) {
+                JOptionPane.showMessageDialog(this, "The game is over and you have reached the final score . " + score);
+                gameOver = true;
+                return;
+            }
             if (dotPoint.x == pacmanPoint.x && dotPoint.y == pacmanPoint.y) {
                 score++;
-                System.out.println("Score increased! Current score: " + score);
+                System.out.println("Score increased! Current score : " + score);
                 getNewDotPointLocation();
             }
+
             movePacman();
         }
 
