@@ -120,10 +120,27 @@ import java.util.Random;
         public void keyReleased(KeyEvent e) {
         }
 
-        private void handleCrossBorder() {
-            //
+        private void resetGame() {
+            pacmanPoint.setLocation((width / boxSize) / 2, (height / boxSize) / 2);
+
+            score = 0;
+
+            getNewDotPointLocation();
+
+            direction = RIGHT;
+
+            repaint();
         }
 
+        private void handleCrossBorder() {
+            int maxX = width / boxSize;
+            int maxY = height / boxSize;
+
+            if (pacmanPoint.x < 0 || pacmanPoint.x >= maxX || pacmanPoint.y < 0 || pacmanPoint.y >= maxY) {
+                System.out.println("Out of bounds! Resetting game...");
+                resetGame();
+            }
+        }
 
         public static void main(String[] args) {
             PacmanGUI frame = new PacmanGUI();
