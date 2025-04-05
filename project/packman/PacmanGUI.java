@@ -99,18 +99,19 @@ import java.util.Random;
         @Override
         public void keyPressed(KeyEvent e) {
             if (e.getKeyCode() == KeyEvent.VK_UP)
-                direction = 3;
+                direction = TOP;
             else if (e.getKeyCode() == KeyEvent.VK_DOWN)
-                direction = 4;
+                direction = BOTTOM;
             else if (e.getKeyCode() == KeyEvent.VK_LEFT)
-                direction = 1;
+                direction = LEFT;
             else if (e.getKeyCode() == KeyEvent.VK_RIGHT)
-                direction = 2;
+                direction = RIGHT;
             else if (e.getKeyCode() == KeyEvent.VK_P)
                 direction = 0;
+            else if (e.getKeyCode() == KeyEvent.VK_Q)
+                System.exit(0);
             else
                 direction = -1;
-
             System.out.println("direction:" + direction + "    <- e.getKeyCode()=" + e.getKeyCode());
 
             repaint();
