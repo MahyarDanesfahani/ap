@@ -6,9 +6,10 @@ import java.util.Scanner;
 
 public class Main_EX2_PM_2_3 {
     private static final String SAVE_FILE = "game_save.txt";
+     private static int score = 0 ;
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        int k, score = 0, totalPoints = 0;
+        int k, totalPoints = 0;
         int[] positionOfx = {1, 1};
         char[][] star;
         long start = System.currentTimeMillis();
@@ -111,6 +112,11 @@ public class Main_EX2_PM_2_3 {
             }
         }
     }
+
+    public static void increaseScore() {
+        score++;
+    }
+
 
     private static void saveGame(int k, int totalPoints, int score, int[] positionOfx, char[][] board) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(SAVE_FILE))) {

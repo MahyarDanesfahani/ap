@@ -30,6 +30,10 @@ public class Main_EX2_PM_1_4 {
             System.out.println("You hit the wall!!! Game Over!!!");
             return true;
         }
+        if (star[newRow][newCol] == '.') {
+            Main_EX2_PM_2_3.increaseScore();
+            star[newRow][newCol] = ' ';
+        }
         positionOfx[0] = newRow;
         positionOfx[1] = newCol;
         star[positionOfx[0]][positionOfx[1]] = s;
