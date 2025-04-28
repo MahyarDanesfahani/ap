@@ -1,11 +1,11 @@
 package excercise.ex4;
-/*
-public class Light {
+
+public class Light_EX4_3_6 {
     private int switch1; // 0 for down, 1 for up
     private int switch2; // 0 for down, 1 for up
     private int lampState; // 0 for off, 1 for on
 
-    public Light() {
+    public Light_EX4_3_6() {
         switch1 = 0;
         switch2 = 0;
         updateLampState();
@@ -37,12 +37,12 @@ public class Light {
         lampState = (switch1 != switch2) ? 1 : 0;
     }
 }
-*/
-public class Light {
+/*
+public class Light_EX4_3_6 {
     private int[] switches;
     private int lampState;
 
-    public Light() {
+    public Light_EX4_3_6() {
         switches = new int[2];
         switches[0] = 0;
         switches[1] = 0;
@@ -75,4 +75,5 @@ public class Light {
         lampState = (switches[0] != switches[1]) ? 1 : 0;
     }
 }
+*/
 

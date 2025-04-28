@@ -1,8 +1,8 @@
 package excercise.ex4;
 
-public class CircuitTester_E3_5 {
+public class CircuitTester_EX4_3_5 {
     public static void main(String[] args) {
-        Light light = new Light();
+        Light_EX4_3_6 lightEX436 = new Light_EX4_3_6();
 
         int[][] switchCombinations = {
                 {0, 0},
@@ -18,9 +18,9 @@ public class CircuitTester_E3_5 {
             int switch1 = combination[0];
             int switch2 = combination[1];
 
-            setSwitchState(light, switch1, switch2);
+            setSwitchState(lightEX436, switch1, switch2);
 
-            int actualLamp = light.getLampState();
+            int actualLamp = lightEX436.getLampState();
 
             int expectedLamp = (switch1 != switch2) ? 1 : 0;
 
@@ -28,22 +28,22 @@ public class CircuitTester_E3_5 {
         }
     }
 
-    private static void setSwitchState(Light light, int desiredSwitch1, int desiredSwitch2) {
-        resetSwitches(light);
+    private static void setSwitchState(Light_EX4_3_6 lightEX436, int desiredSwitch1, int desiredSwitch2) {
+        resetSwitches(lightEX436);
         if (desiredSwitch1 == 1) {
-            light.toggleFirstSwitch();
+            lightEX436.toggleFirstSwitch();
         }
         if (desiredSwitch2 == 1) {
-            light.toggleSecondSwitch();
+            lightEX436.toggleSecondSwitch();
         }
     }
 
-    private static void resetSwitches(Light light) {
-        if (light.getFirstSwitchState() == 1) {
-            light.toggleFirstSwitch();
+    private static void resetSwitches(Light_EX4_3_6 lightEX436) {
+        if (lightEX436.getFirstSwitchState() == 1) {
+            lightEX436.toggleFirstSwitch();
         }
-        if (light.getSecondSwitchState() == 1) {
-            light.toggleSecondSwitch();
+        if (lightEX436.getSecondSwitchState() == 1) {
+            lightEX436.toggleSecondSwitch();
         }
     }
 }
