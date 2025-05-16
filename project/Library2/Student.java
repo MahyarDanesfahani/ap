@@ -19,8 +19,26 @@ public class Student {
         this.membershipDate = LocalDate.now();
     }
 
+    public Student(String firstLastName , String fieldOfStudy , long studentNumber){
+        this.firstLastName=firstLastName;
+        this.fieldOfStudy=fieldOfStudy;
+        this.studentNumber=studentNumber;
+    }
+
     public String getFirstLastName() {
         return firstLastName;
+    }
+
+    public LocalDate getMembershipDate() {
+        return membershipDate;
+    }
+
+    public String getFieldOfStudy() {
+        return fieldOfStudy;
+    }
+
+    public long getStudentNumber() {
+        return studentNumber;
     }
 
     @Override

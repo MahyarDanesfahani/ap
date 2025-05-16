@@ -22,6 +22,12 @@ public class Book {
         this.quantityAvailable = scanner.nextInt();
     }
 
+    public Book(String bookName , String authorName ,int yearPublication){
+        this.bookName=bookName;
+        this.authorName=authorName;
+        this.yearPublication=yearPublication;
+    }
+
     public String getBookName() {
         return bookName;
     }

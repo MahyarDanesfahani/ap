@@ -185,19 +185,19 @@ public class Library {
                 } else {
                     System.out.println("Reports for " + librarian.getFirstLastName() + ":");
                     for (BorrowRecord record : records){
-                        System.out.println("Student: " + record.getStudent().getFirstLastName());
-                        System.out.println("Book: " + record.getBook().getBookName());
-                        System.out.println("Borrowed on: " + record.getBorrowDate());
-                        System.out.println("Return by: " + record.getReturnDate());
+                        System.out.println("Student : " + record.getStudent().getFirstLastName());
+                        System.out.println("Book : " + record.getBook().getBookName());
+                        System.out.println("Borrowed on : " + record.getBorrowDate());
+                        System.out.println("Return by : " + record.getReturnDate());
                     }
                 }
                 LocalDate today = LocalDate.now();
                 System.out.println("=== Overdue Books ===");
                 for (BorrowRecord record : records){
                     if (record.getReturnDate().isBefore(today)){
-                        System.out.println("Student: " + record.getStudent().getFirstLastName() +
-                                ", Book: " + record.getBook().getBookName() +
-                                ", Due: " + record.getReturnDate());
+                        System.out.println("Student : " + record.getStudent().getFirstLastName() +
+                                ", Book : " + record.getBook().getBookName() +
+                                ", Due : " + record.getReturnDate());
                     }
                 }
                 return;
@@ -214,10 +214,10 @@ public class Library {
                 System.out.println("No borrowed books . ");
             } else {
                 for (BorrowRecord record : records){
-                    System.out.println("Student: " + record.getStudent().getFirstLastName());
-                    System.out.println("Book: " + record.getBook().getBookName());
-                    System.out.println("Borrowed on: " + record.getBorrowDate());
-                    System.out.println("Return by: " + record.getReturnDate());
+                    System.out.println("Student : " + record.getStudent().getFirstLastName());
+                    System.out.println("Book : " + record.getBook().getBookName());
+                    System.out.println("Borrowed on : " + record.getBorrowDate());
+                    System.out.println("Return by : " + record.getReturnDate());
                     System.out.println();
                 }
             }
@@ -244,7 +244,31 @@ public class Library {
         }
     }
 
+    public void addStudentFromLoad(Student student){
+        students.add(student);
+    }
+
+    public void addBookFromLoad(Book book) {
+        books.add(book);
+    }
+
+    public void addBorrowRecordFromLoad(BorrowRecord record) {
+        borrowRecords.add(record);
+    }
+
     public ArrayList<Librarian> getLibrarians(){
         return librarians;
+    }
+
+    public ArrayList<Student> getStudents() {
+        return students;
+    }
+    
+    public ArrayList<Book> getBooks() {
+        return books;
+    }
+
+    public ArrayList<BorrowRecord> getBorrowRecords() {
+        return borrowRecords;
     }
 }

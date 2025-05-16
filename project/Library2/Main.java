@@ -1,15 +1,28 @@
 package project.Library2;
 
-import java.time.LocalDate;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.Random;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
         Scanner scanner = new Scanner(System.in);
         Library library = new Library("Central Library");
+
+        ArrayList<Student> loadStudents = Fliemanage.loadStudentOfLibrary();
+        for (Student s : loadStudents){
+            library.addStudentFromLoad(s);
+        }
+
+        ArrayList<Book> loadedBooks = Fliemanage.loadBookOfLibrary();
+        for (Book b : loadedBooks){
+            library.addBookFromLoad(b);
+        }
+
+        ArrayList<BorrowRecord> loadedBorrwed = Fliemanage.loadStudentBorrowedOfLibrary(loadStudents,loadedBooks);
+        for (BorrowRecord record : loadedBorrwed){
+            library.addBorrowRecordFromLoad(record);
+        }
 
         while (true) {
             Menu.menuWelcome();
@@ -77,6 +90,9 @@ public class Main {
                     }
                     break;
                 case 0:
+                    Fliemanage.saveStudentOfLibrary(library.getStudents());
+                    Fliemanage.saveBookOfLibrary(library.getBooks());
+                    Fliemanage.saveStudentBorrowedOfLibrary(library.getBorrowRecords());
                     System.out.println("Exiting program... ");
                     return;
                 default:
