@@ -1,4 +1,4 @@
-package project.Bank;
+package project.bank;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -8,8 +8,9 @@ public class BankingManagement {
     private static Random random = new Random();
 
     private String name;
-    private int nationalCode;
-    private int phoneNumber;
+    private long nationalCode;
+    private long phoneNumber;
+
 
     private float amount;
     private int password;
@@ -22,10 +23,10 @@ public class BankingManagement {
         name = scanner.nextLine();
 
         System.out.print("Enter national code : ");
-        nationalCode = scanner.nextInt();
+        nationalCode = scanner.nextLong();
 
         System.out.print("Enter phone number : ");
-        phoneNumber = scanner.nextInt();
+        phoneNumber = scanner.nextLong();
     }
 
     public void createAccount(int password, float amount, ArrayList<BankingManagement> allAccounts) {
@@ -33,7 +34,7 @@ public class BankingManagement {
         this.password = password;
         this.amount = amount;
 
-        System.out.println("Card number: " + cardNumber);
+        System.out.println("Card number : " + cardNumber);
 
         int expirationMonth = 1 + random.nextInt(12);
         System.out.println("Expiration date : 1408/" + expirationMonth);
@@ -116,11 +117,12 @@ public class BankingManagement {
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
-    public int getNationalCode() { return nationalCode; }
-    public void setNationalCode(int nationalCode) { this.nationalCode = nationalCode; }
+    public long getNationalCode() { return nationalCode; }
+    public void setNationalCode(long nationalCode) { this.nationalCode = nationalCode; }
 
-    public int getPhoneNumber() { return phoneNumber; }
-    public void setPhoneNumber(int phoneNumber) { this.phoneNumber = phoneNumber; }
+    public long getPhoneNumber() { return phoneNumber; }
+    public void setPhoneNumber(long phoneNumber) { this.phoneNumber = phoneNumber; }
+
 
     public int getPassword() { return password; }
     public void setPassword(int password) { this.password = password; }

@@ -1,5 +1,6 @@
-package project.Bank;
+package project.bank;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -11,7 +12,7 @@ public class Main {
         System.out.println("Welcome to Banking Management System");
         boolean running = true;
         while (running) {
-            System.out.println("\n1. Create Account\n2. Deposit or Withdraw\n3. Check Balance\n4. Transfer Money\n5. Exit");
+            System.out.println("\n1. Create Account\n2. Deposit or Withdraw\n3. Check Balance\n4. Transfer Money\n5. Exchange\n6. Exit");
             System.out.print("Choose an option : ");
             int choice = scanner.nextInt();
 
@@ -92,6 +93,10 @@ public class Main {
                     }
                 }
                 case 5 -> {
+                    Dollar_Rate dollarRate = new Dollar_Rate();
+                    dollarRate.exchange(new File("exchange.txt"));
+                }
+                case 6 -> {
                     FileManager.saveAccountsToFile(accounts);
                     running = false;
                     System.out.println("Goodbye");

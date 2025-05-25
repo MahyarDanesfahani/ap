@@ -1,4 +1,4 @@
-package project.Bank;
+package project.bank;
 
 import java.io.*;
 import java.util.ArrayList;
