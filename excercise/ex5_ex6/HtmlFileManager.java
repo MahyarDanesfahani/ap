@@ -1,6 +1,7 @@
 package excercise.ex5_ex6;
 
 import java.io.*;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -61,5 +62,52 @@ public class HtmlFileManager {
         } catch (IOException e) {
             System.out.println("Failed to save HTML: " + e.getMessage());
         }
+    }
+
+    public String saveWithUrl(List<String> lines, URL url) {
+        try {
+            String host = url.getHost();
+            String path = url.getPath();
+            String baseDir = saveFileBasePath;
+            String domain = Conf.ALLOWED_DOMAIN;
+
+            if (!host.equals(domain)) {
+                String subdomain = host.replace("." + domain, "");
+                baseDir += "/_" + subdomain;
+            }
+
+            if (path != null && !path.trim().isEmpty()) {
+                String[] parts = path.split("/");
+                for (int i = 0; i < parts.length - 1; i++) {
+                    baseDir += "/" + parts[i];
+                }
+            }
+
+            DirectoryTools.createDirectory(baseDir);
+
+            String filename = "index_" + (saveCounter++) + ".html";
+            if (path.endsWith(".html")) {
+                filename = partsSafeFileName(path);
+            }
+
+            String fullPath = baseDir + "/" + filename;
+
+            PrintWriter out = new PrintWriter(fullPath);
+            for (String line : lines) {
+                out.println(line);
+            }
+            out.close();
+
+            System.out.println("Saved to: " + fullPath);
+            return fullPath;
+        } catch (Exception e) {
+            System.out.println("saveWithUrl failed: " + e.getMessage());
+            return null;
+        }
+    }
+
+    private String partsSafeFileName(String path) {
+        path = path.substring(path.lastIndexOf('/') + 1);
+        return path.isEmpty() ? "index.html" : path;
     }
 }

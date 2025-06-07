@@ -2,9 +2,7 @@ package excercise.ex5_ex6;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Fetcher {
 
@@ -24,9 +22,39 @@ public class Fetcher {
 
     private final String allowedDomain = "znu.ac.ir";
     private final HtmlFileManager htmlFileManager ;
+    private MediaDownloader mediaDownloader = new MediaDownloader();
+    private Set<String> downloadedUrls =new HashSet<>();
 
     public Fetcher(String baseSavePath){
         this.htmlFileManager = new HtmlFileManager(baseSavePath);
+    }
+
+    public void fetch(String urlString){
+        try {
+            if (downloadedUrls.contains(urlString)){
+                System.out.println("URL already downloaded: " + urlString);
+                return;
+            }
+
+            if (!UrlUtils.isSameDomain(urlString,Conf.ALLOWED_DOMAIN)){
+                System.out.println("Skipping foreign domain: " + urlString);
+                return;
+            }
+
+            List<String> htmlLines = UrlDownloader.download(urlString);
+            if (htmlLines == null){
+                System.out.println("Failed to download: " + urlString);
+                return;
+            }
+
+            String htmlPath = htmlFileManager.saveWithUrl(htmlLines,new URL(urlString));
+            downloadedUrls.add(urlString);
+            mediaDownloader.extractAndDownload(htmlPath,urlString);
+            Thread.sleep(Conf.DOWNLOAD_DELAY_SECONDS * 1000L);
+        } catch (Exception e) {
+            System.out.println("Error while fetching URL: " + urlString);
+            e.printStackTrace();
+        }
     }
 
     private boolean isAllowedDomain(URL url){
