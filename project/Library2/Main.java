@@ -24,6 +24,8 @@ public class Main {
             library.addBorrowRecordFromLoad(record);
         }
 
+        library.showBorrowReportsOfLoad();
+
         while (true) {
             Menu.menuWelcome();
             byte answer = scanner.nextByte();

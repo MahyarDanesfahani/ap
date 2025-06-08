@@ -37,5 +37,4 @@ public class Librarian {
     public int getPassword() {
         return password;
     }
-
 }

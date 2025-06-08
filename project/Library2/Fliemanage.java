@@ -8,6 +8,7 @@ public class Fliemanage {
     private static final String Name_File1 = "Student.txt";
     private static final String Name_File2 = "Book.txt";
     private static final String Name_File3 = "Student_borrowed.txt";
+    private static final String Name_File4 = "ReportsOfLibrarian.txt";
 
     public static void saveStudentOfLibrary(ArrayList<Student> students) {
         try (PrintWriter writer = new PrintWriter(new FileWriter(Name_File1));) {
@@ -28,7 +29,8 @@ public class Fliemanage {
             for (Book book : books) {
                 writer.println(book.getBookName() + "," +
                         book.getAuthorName() + "," +
-                        book.getYearPublication());
+                        book.getYearPublication() + "," +
+                        book.getQuantityAvailable());
             }
 
         } catch (Exception e) {
@@ -48,6 +50,14 @@ public class Fliemanage {
 
         } catch (Exception e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public static void saveReportToFile(String reportContent){
+        try (PrintWriter writer = new PrintWriter(new FileWriter(Name_File4))){
+            writer.println(reportContent);
+        }catch (IOException e) {
+            System.out.println("Error saving report: " + e.getMessage());
         }
     }
 
@@ -97,11 +107,12 @@ public class Fliemanage {
             String line;
             while ((line = reader.readLine()) != null) {
                 String[] parts = line.split(",");
-                if (parts.length == 3) {
+                if (parts.length == 4) {
                     String name = parts[0];
                     String author = parts[1];
                     int year = Integer.parseInt(parts[2]);
-                    books.add(new Book(name, author, year));
+                    int qty = Integer.parseInt(parts[3]);
+                    books.add(new Book(name, author, year,qty));
                 }
             }
         } catch (IOException e) {
@@ -136,7 +147,9 @@ public class Fliemanage {
 
                 Student student2 = null;
                 for (Student s : students) {
-                    if (s.getFirstLastName().equalsIgnoreCase(nameStudent) && s.getStudentNumber() == number && s.getMembershipDate().isBefore(member)) {
+                    if (s.getFirstLastName().equalsIgnoreCase(nameStudent)
+                            && s.getStudentNumber() == number
+                            && s.getMembershipDate().equals(member)) {
                         student2 = s;
                         break;
                     }
@@ -154,8 +167,6 @@ public class Fliemanage {
                     BorrowRecord record = new BorrowRecord(student2, book2);
                     records.add(record);
                 }
-
-
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -7,6 +7,7 @@ public class BorrowRecord {
     private Book book;
     private LocalDate borrowDate;
     private LocalDate returnDate;
+    private final int durationDays = 30 ;
 
     public BorrowRecord(Student student, Book book) {
         this.student = student;
@@ -29,6 +30,10 @@ public class BorrowRecord {
 
     public LocalDate getReturnDate() {
         return returnDate;
+    }
+
+    public LocalDate getDeadline(){
+        return borrowDate.plusDays(durationDays);
     }
 
     @Override

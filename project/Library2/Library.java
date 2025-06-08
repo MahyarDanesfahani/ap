@@ -20,12 +20,6 @@ public class Library {
         librarians.add(new Librarian("reza","REZA",5678));
     }
 
-    public void addStudent(){
-        Student newStudent = new Student(scanner);
-        students.add(newStudent);
-        System.out.println("Student registered successfully . ");
-    }
-
     public boolean librarianLogin(Scanner scanner){
         System.out.println("Enter username : ");
         String user = scanner.nextLine();
@@ -44,6 +38,13 @@ public class Library {
         }
         System.out.println("Username not found . ");
         return false ;
+    }
+
+
+    public void addStudent(){
+        Student newStudent = new Student(scanner);
+        students.add(newStudent);
+        System.out.println("Student registered successfully . ");
     }
 
     public void addBook(){
@@ -161,6 +162,7 @@ public class Library {
         System.out.println("Borrow record not found . ");
     }
 
+
     public void showBorrowedBooksAndOverdue(){
         LocalDate today = LocalDate.now();
         System.out.println("=== Borrowed Books ===");
@@ -224,6 +226,7 @@ public class Library {
         }
     }
 
+
     public void showPopularBooks(){
         ArrayList<Book> counted = new ArrayList<>();
         ArrayList<Integer> count = new ArrayList<>();
@@ -244,6 +247,27 @@ public class Library {
         }
     }
 
+
+    public void showBorrowReportsOfLoad(){
+        StringBuilder report = new StringBuilder();
+
+        for (Librarian librarian : librarians) {
+            report.append("Librarian: ").append(librarian.getFirstLastName()).append("\n");
+            ArrayList<BorrowRecord> records = librarian.getBorrowRecords();
+            if (records.isEmpty()) {
+                report.append("No borrowed books.\n\n");
+            } else {
+                for (BorrowRecord record : records) {
+                    report.append("Student: ").append(record.getStudent().getFirstLastName()).append("\n");
+                    report.append("Book: ").append(record.getBook().getBookName()).append("\n");
+                    report.append("Borrowed on: ").append(record.getBorrowDate()).append("\n");
+                    report.append("Return by: ").append(record.getReturnDate()).append("\n\n");
+                }
+            }
+        }
+        Fliemanage.saveReportToFile(report.toString());
+    }
+
     public void addStudentFromLoad(Student student){
         students.add(student);
     }
@@ -254,11 +278,54 @@ public class Library {
 
     public void addBorrowRecordFromLoad(BorrowRecord record) {
         borrowRecords.add(record);
+        record.getBook().setQuantityAvailable(record.getBook().getQuantityAvailable()-1);
     }
 
-    public ArrayList<Librarian> getLibrarians(){
-        return librarians;
+    //++
+    public ArrayList<Student> ListOf10BookTheBorrowed(Student currentStudent) {
+        ArrayList<Student> result = new ArrayList<>();
+        ArrayList<Student> allStudent = new ArrayList<>();
+
+        for (BorrowRecord record : borrowRecords){
+            if (allStudent.contains(record.getStudent())){
+                allStudent.add(record.getStudent());
+            }
+        }
+
+        for (Student student :allStudent){
+            int i=0;
+            for (BorrowRecord record : borrowRecords){
+                if (record.getStudent().equals(student)&&record.getReturnDate() != null && !record.getReturnDate().isAfter(record.getDeadline())){
+                    i++;
+                }
+            }
+
+            if (i >= 10 && !student.equals(currentStudent)){
+                result.add(student);
+            }
+        }
+        return result;
     }
+
+    public void showListOf10BookTheBorrowed(Student student){
+        ArrayList<Book> borrowedBooks = new ArrayList<>();
+        for (BorrowRecord record : borrowRecords){
+            if (record.getStudent().equals(student)
+                    && record.getReturnDate() != null
+                    && !record.getReturnDate().isAfter(record.getDeadline())) {
+                borrowedBooks.add(record.getBook());
+            }
+        }
+        if (borrowedBooks.size() >= 10){
+            System.out.println("List of CurrentStudent");
+            for (Book book : borrowedBooks){
+                System.out.println("The name : " + book.getBookName() + "\tThe AuthorName : " + book.getAuthorName());
+            }
+        }else {
+            System.out.println("Not Student exist");
+        }
+    }
+
 
     public ArrayList<Student> getStudents() {
         return students;
