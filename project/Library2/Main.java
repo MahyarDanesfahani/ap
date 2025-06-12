@@ -1,30 +1,27 @@
 package project.Library2;
 
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
+import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws FileNotFoundException {
+    public static void main(String[] args) throws IOException {
         Scanner scanner = new Scanner(System.in);
-        Library library = new Library("Central Library");
 
-        ArrayList<Student> loadStudents = Fliemanage.loadStudentOfLibrary();
-        for (Student s : loadStudents){
-            library.addStudentFromLoad(s);
+        String storageType = Files.readString(Path.of("config.txt")).trim().split("=")[1];
+        LibraryStorage storage;
+
+        if (storageType.equalsIgnoreCase("json")) {
+            storage = new LibraryStorageJson("library.json");
+        } else {
+            throw new RuntimeException("Unsupported storage type: " + storageType);
         }
 
-        ArrayList<Book> loadedBooks = Fliemanage.loadBookOfLibrary();
-        for (Book b : loadedBooks){
-            library.addBookFromLoad(b);
+        Library library = storage.loadLibrary();
+        if (library == null) {
+            library = new Library("Central Library");
         }
-
-        ArrayList<BorrowRecord> loadedBorrwed = Fliemanage.loadStudentBorrowedOfLibrary(loadStudents,loadedBooks);
-        for (BorrowRecord record : loadedBorrwed){
-            library.addBorrowRecordFromLoad(record);
-        }
-
-        library.showBorrowReportsOfLoad();
 
         while (true) {
             Menu.menuWelcome();
@@ -50,9 +47,10 @@ public class Main {
                             library.lendOrReturn();
                             break;
                         default:
-                            System.out.println("Invalid option . ");
+                            System.out.println("Invalid option.");
                     }
                     break;
+
                 case 2:
                     if (library.librarianLogin(scanner)) {
                         Menu.menuCurator();
@@ -69,10 +67,11 @@ public class Main {
                                 library.showBook();
                                 break;
                             default:
-                                System.out.println("Invalid option . ");
+                                System.out.println("Invalid option.");
                         }
                     }
                     break;
+
                 case 3:
                     Menu.menuAdministrator();
                     byte adminChoice = scanner.nextByte();
@@ -88,18 +87,19 @@ public class Main {
                             library.showBorrowedBooksAndOverdue();
                             break;
                         default:
-                            System.out.println("Invalid option . ");
+                            System.out.println("Invalid option.");
                     }
                     break;
+
                 case 0:
-                    Fliemanage.saveStudentOfLibrary(library.getStudents());
-                    Fliemanage.saveBookOfLibrary(library.getBooks());
-                    Fliemanage.saveStudentBorrowedOfLibrary(library.getBorrowRecords());
-                    System.out.println("Exiting program... ");
+                    storage.saveLibrary(library);
+                    System.out.println("Exiting program...");
                     return;
+
                 default:
-                    System.out.println("Invalid option . Try again . ");
+                    System.out.println("Invalid option. Try again.");
             }
         }
     }
 }
+
