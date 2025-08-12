@@ -43,6 +43,7 @@ public class Main {
                     library_match.loginStudent();
                     break;
                 case 3:
+                    library_match.searchBook_Student();
                     break;
                 case 4:
                     break;

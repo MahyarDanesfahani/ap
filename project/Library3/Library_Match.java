@@ -81,5 +81,41 @@ public class Library_Match {
         System.out.println("No student found with that username . ");
     }
 
+    public void searchBook_Student(){
+        System.out.println("\n*** Search Book ***" +
+                "\nLeave any field empty if you don't want to filter by it ." +
+                "\nEnter book title (or press Enter to skip) : ");
+        String title = scanner.nextLine().trim().toLowerCase();
+        System.out.println("Enter author name (or press Enter to skip) : ");
+        String author = scanner.nextLine().trim().toLowerCase();
+        System.out.println("Enter year of publication (or press Enter to skip) : ");
+        String yearInput = scanner.nextLine().trim();
+
+        boolean found = false;
+        for (Book b : books){
+            boolean match =true;
+
+            if (!title.isEmpty() && !b.getBook_Name().toLowerCase().contains(title)) match = false;
+            if (!author.isEmpty() && !b.getAuthor_Name().toLowerCase().contains(author)) match = false;
+            if (!yearInput.isEmpty()){
+                try {
+                    int year = Integer.parseInt(yearInput);
+                    if (b.getYearPublication() != year) match = false;
+                } catch (NumberFormatException e){
+                    System.out.println("Invalid year format . Skipping year filter .");
+                }
+            }
+            if (match){
+                System.out.println(b);
+                found = true;
+            }
+        }
+
+        if (!found){
+            System.out.println("No books found matching your criteria .");
+        }
+
+    }
+
 
 }
