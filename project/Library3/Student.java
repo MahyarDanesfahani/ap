@@ -10,6 +10,7 @@ public class Student {
     private long studentNumber;
     private String fieldOfStudy;
     private int Count_Student = 0;
+    private boolean active;
 
     public Student(Scanner scanner){
         System.out.println("Enter full Name : ");
@@ -27,6 +28,7 @@ public class Student {
             passInput = scanner.nextLine();
         }
         this.password=Integer.parseInt(passInput);
+        this.active=true;
         this.Count_Student += 1;
     }
 
@@ -48,6 +50,10 @@ public class Student {
     public int getCount_Student() {
         return Count_Student;
     }
+    public boolean isActive(){ return active;}
+    public void setActive(boolean active) {
+        this.active = active;
+    }
 
     @Override
     public String toString(){
@@ -55,6 +61,7 @@ public class Student {
                 "\nThe Name : " + this.first_last_Name +
                 "\nThe Student_Number : " + this.studentNumber +
                 "\nThe Field of study : " + this.fieldOfStudy +
+                "\nThe Active is : " + this.active +
                 "\n }");
     }
 }

@@ -57,4 +57,29 @@ public class Library_Match {
         }
     }
 
+    public void loginStudent(){
+        System.out.println("Enter username : ");
+        String username = scanner.nextLine();
+        System.out.println("Enter password : ");
+        String passInput = scanner.nextLine();
+
+        for (Student s : students){
+            if (s.getUsername().equalsIgnoreCase(username)){
+                if (!s.isActive()){
+                    System.out.println("Your account is inactive . Please contact the library .");
+                    return;
+                }
+                if (String.valueOf(s.getPassword()).equals(passInput)){
+                    System.out.println("Login successful . Welcome, " + s.getFirst_last_Name() + "!");
+                    return;
+                } else {
+                    System.out.println("Incorrect password .");
+                    return;
+                }
+            }
+        }
+        System.out.println("No student found with that username . ");
+    }
+
+
 }
