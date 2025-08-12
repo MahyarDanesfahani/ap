@@ -1,7 +1,9 @@
 package project.Library3;
 
 import java.io.*;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -11,7 +13,7 @@ public class Library_Match {
     String Name_Library ;
     private ArrayList<Student> students = new ArrayList<>();
     private ArrayList<Book> books = new ArrayList<>();
-    private ArrayList<BorrowRecord> borrowRecords = new ArrayList<>();
+    private ArrayList<BorrowRequest> borrowRequests = new ArrayList<>();
     private static final String STUDENT_FILE = "students.json" ;
 
     private Scanner scanner = new Scanner(System.in);
@@ -115,6 +117,50 @@ public class Library_Match {
             System.out.println("No books found matching your criteria .");
         }
 
+    }
+
+    public void requestBorrowBook_Student(Student currentStudent){
+        System.out.println("\n### Borrow Book Request ###");
+
+        for (int i=0 ; i<books.size() ; i++){
+            System.out.println((i+1) + ". " + books.get(i));
+        }
+        System.out.println("Enter book number to request : ");
+        int choice = Integer.parseInt(scanner.nextLine()) - 1;
+
+        if (choice < 0 || choice >= books.size()){
+            System.out.println("Invalid selection .");
+            return;
+        }
+
+        Book selectedBook = books.get(choice);
+        if (!selectedBook.isAvailable()){
+            System.out.println("Sorry, this book is not available right now .");
+            return;
+        }
+
+        System.out.println("Enter start date (YYYY-MM-DD) : ");
+        LocalDate start = LocalDate.parse(scanner.nextLine());
+        System.out.println("Enter end date (YYYY-MM-DD) : ");
+        LocalDate end = LocalDate.parse(scanner.nextLine());
+
+        BorrowRequest request = new BorrowRequest(currentStudent,selectedBook,start,end);
+        borrowRequests.add(request);
+        System.out.println("Your request has been submitted and is pending approval .");
+
+    }
+
+    public Student findStudentByID(String id){
+        for (Student s : students){
+            if (s.getStudentNumber().equals(id)){
+                return s;
+            }
+        }
+        return null;
+    }
+
+    public List<BorrowRequest> getBorrowRequest(){
+        return borrowRequests;
     }
 
 

@@ -7,7 +7,7 @@ public class Student {
     private String first_last_Name;
     private String username;
     private int password;
-    private long studentNumber;
+    private String studentNumber;
     private String fieldOfStudy;
     private int Count_Student = 0;
     private boolean active;
@@ -16,7 +16,7 @@ public class Student {
         System.out.println("Enter full Name : ");
         this.first_last_Name = scanner.nextLine();
         System.out.println("Enter the Student_Number : ");
-        this.studentNumber = scanner.nextLong();
+        this.studentNumber = scanner.nextLine();
         System.out.println("Enter the Field of study : ");
         this.fieldOfStudy = scanner.nextLine();
         System.out.println("Enter the Username : ");
@@ -41,7 +41,7 @@ public class Student {
     public int getPassword() {
         return password;
     }
-    public long getStudentNumber() {
+    public String getStudentNumber() {
         return studentNumber;
     }
     public String getFieldOfStudy() {

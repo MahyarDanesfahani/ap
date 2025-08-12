@@ -46,6 +46,15 @@ public class Main {
                     library_match.searchBook_Student();
                     break;
                 case 4:
+                    System.out.println("Enter your student ID: ");
+                    String studentID = scanner.nextLine();
+
+                    Student student = library_match.findStudentByID(studentID);
+                    if (student != null){
+                        library_match.requestBorrowBook_Student(student);
+                    } else {
+                        System.out.println("Student not found !");
+                    }
                     break;
                 default:
                     System.out.println("Invalid choice . Please try again . ");
