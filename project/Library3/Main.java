@@ -18,6 +18,7 @@ public class Main {
                     studentMenu(scanner,library_match);
                     break;
                 case 2:
+                    GuestMenu(scanner,library_match);
                     break;
                 case 3:
                     break;
@@ -59,6 +60,24 @@ public class Main {
                 default:
                     System.out.println("Invalid choice . Please try again . ");
             }
+        }
+    }
+
+    private static void GuestMenu(Scanner scanner,Library_Match library_match){
+        Menu_Guest.Welcome_guest();
+        System.out.println("Your Choice : ");
+        byte answer_Guest = scanner.nextByte();
+
+        switch (answer_Guest){
+            case 1:
+                library_match.viewStudentCount_Guest();
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            default:
+                System.out.println("Invalid choice .");
         }
     }
 }

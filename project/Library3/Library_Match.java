@@ -164,4 +164,9 @@ public class Library_Match {
     }
 
 
+    public void viewStudentCount_Guest(){
+        System.out.println("Total registered students: " + students.size());
+    }
+
+
 }
