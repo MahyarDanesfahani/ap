@@ -76,6 +76,7 @@ public class Main {
                 library_match.searchBook_Guest();
                 break;
             case 3:
+                library_match.viewLibraryStatistics_Guest();
                 break;
             default:
                 System.out.println("Invalid choice .");

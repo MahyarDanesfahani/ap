@@ -185,7 +185,24 @@ public class Library_Match {
         }
     }
 
-
+    public void viewLibraryStatistics_Guest(){
+        System.out.println("===== Library Statistics =====" +
+                "\nTotal Students : " + students.size() +
+                "\nTotal Books : " + books.size() +
+                "\nTotal Borrows : " + borrowRequests.size());
+        if (borrowRequests.isEmpty()){
+            System.out.println("No books are currently borrowed . ");
+        } else {
+            System.out.println("Last Borrowed Books : ");
+            int count = 0 ;
+            for (int i = borrowRequests.size()-1 ; i>=0 && count < 10 ; i--){
+                BorrowRequest b = borrowRequests.get(i);
+                System.out.println("_ " + b.getBook().getBook_Name() +
+                        "(Borrowed by : " + b.getStudent().getFirst_last_Name()  + ")");
+                count++;
+            }
+        }
+    }
 
 
 
