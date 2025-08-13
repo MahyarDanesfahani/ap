@@ -168,5 +168,25 @@ public class Library_Match {
         System.out.println("Total registered students: " + students.size());
     }
 
+    public void searchBook_Guest(){
+        System.out.println("Enter the book title to search: ");
+        String title = scanner.nextLine();
+        boolean found = false;
+
+        for (Book book : books){
+            if (book.getBook_Name().equalsIgnoreCase(title)){
+                System.out.println("** The Book is : **");
+                book.toString();
+                found = true;
+            }
+        }
+        if (!found){
+            System.out.println("No book found with that title . ");
+        }
+    }
+
+
+
+
 
 }

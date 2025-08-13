@@ -73,6 +73,7 @@ public class Main {
                 library_match.viewStudentCount_Guest();
                 break;
             case 2:
+                library_match.searchBook_Guest();
                 break;
             case 3:
                 break;
