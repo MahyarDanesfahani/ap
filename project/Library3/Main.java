@@ -21,6 +21,7 @@ public class Main {
                     GuestMenu(scanner,library_match);
                     break;
                 case 3:
+                    LibrarianMenu(scanner,library_match);
                     break;
                 case 4:
                     break;
@@ -80,6 +81,31 @@ public class Main {
                 break;
             default:
                 System.out.println("Invalid choice .");
+        }
+    }
+
+    private static void LibrarianMenu(Scanner scanner , Library_Match library_match){
+       Librarian currentLibrarian =  library_match.login_Librarian();
+        if (currentLibrarian != null) {
+            Menu_Librarian.Menu_Librarians();
+            byte answer_Librarian = scanner.nextByte();
+            switch (answer_Librarian){
+                case 1:
+                    break;
+                case 2:
+                    break;
+                case 3:
+                    break;
+                case 4:
+                    break;
+                case 5:
+                    break;
+                case 6:
+                    break;
+                case 7:
+                    break;
+                default:
+            }
         }
     }
 }

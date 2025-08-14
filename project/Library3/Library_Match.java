@@ -14,6 +14,7 @@ public class Library_Match {
     private ArrayList<Student> students = new ArrayList<>();
     private ArrayList<Book> books = new ArrayList<>();
     private ArrayList<BorrowRequest> borrowRequests = new ArrayList<>();
+    private ArrayList<Librarian> librarian = new ArrayList<>();
     private static final String STUDENT_FILE = "students.json" ;
 
     private Scanner scanner = new Scanner(System.in);
@@ -205,5 +206,21 @@ public class Library_Match {
     }
 
 
+    public Librarian login_Librarian(){
+        Scanner s = new Scanner(System.in);
+        System.out.println("Enter username : ");
+        String username = s.nextLine();
+        System.out.println("Enter password : ");
+        String password = s.nextLine();
+
+        for (Librarian l : librarian){
+            if (l.getUsername_Librarian().equals(username) && l.getPassword_Librarian().equals(password)){
+                System.out.println("*! Welcome " + l.getName_Librarian() +" !*");
+                return l;
+            }
+        }
+        System.out.println("Invalid username or password.");
+        return null;
+    }
 
 }
