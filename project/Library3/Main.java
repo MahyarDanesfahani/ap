@@ -94,6 +94,7 @@ public class Main {
                     library_match.changePassword_Librarian(currentLibrarian,scanner);
                     break;
                 case 2:
+                    library_match.addBook_Librarian(scanner);
                     break;
                 case 3:
                     break;

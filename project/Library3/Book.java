@@ -5,6 +5,7 @@ import java.util.Scanner;
 public class Book {
     private String Book_Name;
     private String Author_Name;
+    private String Code_Book;
     private int yearPublication;
     private int quantityAvailable;
     private int Count_Book;
@@ -16,14 +17,17 @@ public class Book {
         this.Author_Name = scanner.nextLine();
         System.out.println("Enter the year of publication : ");
         this.yearPublication = scanner.nextInt();
+        System.out.println("Enter the code Book :");
+        this.Code_Book = scanner.nextLine();
         System.out.println("Enter the number of copies available : ");
         this.quantityAvailable = scanner.nextInt();
         this.Count_Book += 1 ;
     }
 
-    public Book(String bookName , String authorName ,int yearPublication , int quantityAvailable){
+    public Book(String bookName , String authorName,String code_Book ,int yearPublication , int quantityAvailable){
         this.Book_Name=bookName;
         this.Author_Name=authorName;
+        this.Code_Book=code_Book;
         this.yearPublication=yearPublication;
         this.quantityAvailable=quantityAvailable;
     }
@@ -47,12 +51,16 @@ public class Book {
         this.quantityAvailable = quantityAvailable;
     }
     public boolean isAvailable() { return quantityAvailable > 0;}
+    public String getCode_Book() {
+        return Code_Book;
+    }
 
     @Override
     public String toString(){
         return "Book { " +
                 "\nThe Name : " + this.Book_Name +
                 "\nThe Author_Name : " + this.Author_Name +
+                "\nThe Code_Book : " + this.Code_Book +
                 "\nThe yaer Publication : " + this.yearPublication +
                 "\nThe Quantity available : " + this.getQuantityAvailable() +
                 "\nThe Available is : " + (isAvailable() ? "Yes" : "No") +

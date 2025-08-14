@@ -249,4 +249,51 @@ public class Library_Match {
         saveLibrarianToFile();
     }
 
+    public void saveBookTofile(){
+        try (FileWriter writer =new FileWriter("books.json")){
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            gson.toJson(books,writer);
+        } catch (IOException e){
+            System.out.println("Error saving books : " + e.getMessage());
+        }
+    }
+
+    public void addBook_Librarian(Scanner scanner){
+        System.out.println("=== Add New Book ===");
+        System.out.println("Enter the code_Book : ");
+        String code  = scanner.nextLine();
+
+        for (Book b : books){
+            if (b.getCode_Book().equalsIgnoreCase(code)){
+                System.out.println("Book with this code already exists !!!");
+                return;
+            }
+        }
+        System.out.println("Enter Book name : ");
+        String nameBook = scanner.nextLine();
+        System.out.println("Enter Author name : ");
+        String author = scanner.nextLine();
+        System.out.println("Enter number of copies : ");
+        int copies;
+        try {
+            copies = Integer.parseInt(scanner.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid number ! Book not added . ");
+            return;
+        }
+        System.out.println("Enter year of publication : ");
+        int year;
+        try {
+            year = Integer.parseInt(scanner.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid number ! Book not added . ");
+            return;
+        }
+
+        Book newBook = new Book(nameBook,author,code,year,copies);
+        books.add(newBook);
+        saveBookTofile();
+        System.out.println("Book added successfully !!!");
+    }
+
 }
