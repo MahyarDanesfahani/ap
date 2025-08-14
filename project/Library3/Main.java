@@ -91,6 +91,7 @@ public class Main {
             byte answer_Librarian = scanner.nextByte();
             switch (answer_Librarian){
                 case 1:
+                    library_match.changePassword_Librarian(currentLibrarian,scanner);
                     break;
                 case 2:
                     break;

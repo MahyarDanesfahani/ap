@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
 public class Library_Match {
@@ -221,6 +222,31 @@ public class Library_Match {
         }
         System.out.println("Invalid username or password.");
         return null;
+    }
+
+    public void saveLibrarianToFile(){
+        try (FileWriter writer =new FileWriter("librarians.json")){
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            gson.toJson(librarian,writer);
+        } catch (IOException e){
+            System.out.println("Error saving librarians : " + e.getMessage());
+        }
+    }
+
+    public void changePassword_Librarian(Librarian librarian,Scanner scanner){
+        System.out.println("Enter current password: ");
+        String oldPassword = scanner.nextLine();
+
+        if (!librarian.getPassword_Librarian().equals(oldPassword)){
+            System.out.println("Incorrect current password . Password not changed . ");
+            return;
+        }
+        System.out.println("Enter new password : ");
+        String newPassword = scanner.nextLine();
+        librarian.setPassword_Librarian(newPassword);
+        System.out.println("Password updated successfully !!!");
+
+        saveLibrarianToFile();
     }
 
 }
