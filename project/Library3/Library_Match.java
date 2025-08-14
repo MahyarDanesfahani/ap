@@ -29,6 +29,7 @@ public class Library_Match {
 
     }
 
+
     public void register_Student(){
         Student new_Student = new Student(scanner);
         for (Student s : students){
@@ -294,6 +295,74 @@ public class Library_Match {
         books.add(newBook);
         saveBookTofile();
         System.out.println("Book added successfully !!!");
+    }
+
+    public void searchAndEditeBook_Librarian(Scanner scanner){
+        System.out.println("Enter code or name Book : ");
+        String  key = scanner.nextLine();
+
+        Book foundBook = null;
+        for (Book b : books){
+            if (b.getCode_Book().equalsIgnoreCase(key) ||
+                b.getBook_Name().equalsIgnoreCase(key)) {
+                foundBook = b;
+                break;
+            }
+        }
+
+        if (foundBook == null){
+            System.out.println("No book found with given code or name . ");
+        }
+        System.out.println("= Book found =" +
+        "\n" + foundBook.toString());
+
+        System.out.println("** Select field to edit **" +
+                "\n1_Book name" +
+                "\n2_Author name" +
+                "\n3_Code Book" +
+                "\n4_Year publication" +
+                "\n5_Number of copies" +
+                "\n0_Cancel");
+        byte an_Librarian = scanner.nextByte();
+        switch (an_Librarian){
+            case 1:
+                System.out.println("Enter new name Book : ");
+                foundBook.setBook_Name(scanner.nextLine());
+                break;
+            case 2:
+                System.out.println("Enter new Author name : ");
+                foundBook.setAuthor_Name(scanner.nextLine());
+                break;
+            case 3:
+                System.out.println("Enter new Code_Book : ");
+                foundBook.setCode_Book(scanner.nextLine());
+                break;
+            case 4:
+                System.out.println("Enter new Year of publication : ");
+                try {
+                    int year = Integer.parseInt(scanner.nextLine());
+                    foundBook.setQuantityAvailable(year);
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid number! No change made . ");
+                }
+            case 5:
+                System.out.println("Enter new Number of copies : ");
+                try {
+                    int copy = Integer.parseInt(scanner.nextLine());
+                    foundBook.setQuantityAvailable(copy);
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid number! No change made . ");
+                }
+                break;
+            case 0:
+                System.out.println("Edit canceled . ");
+                return;
+            default:
+                System.out.println("Invalid choice . ");
+                return;
+        }
+        saveBookTofile();
+        System.out.println("Book updated successfully !!!");
     }
 
 }

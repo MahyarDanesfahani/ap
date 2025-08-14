@@ -97,6 +97,7 @@ public class Main {
                     library_match.addBook_Librarian(scanner);
                     break;
                 case 3:
+                    library_match.searchAndEditeBook_Librarian(scanner);
                     break;
                 case 4:
                     break;

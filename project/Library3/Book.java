@@ -50,6 +50,18 @@ public class Book {
     public void setQuantityAvailable(int quantityAvailable) {
         this.quantityAvailable = quantityAvailable;
     }
+    public void setBook_Name(String book_Name) {
+        Book_Name = book_Name;
+    }
+    public void setAuthor_Name(String author_Name) {
+        Author_Name = author_Name;
+    }
+    public void setCode_Book(String code_Book) {
+        Code_Book = code_Book;
+    }
+    public void setYearPublication(int yearPublication) {
+        this.yearPublication = yearPublication;
+    }
     public boolean isAvailable() { return quantityAvailable > 0;}
     public String getCode_Book() {
         return Code_Book;
