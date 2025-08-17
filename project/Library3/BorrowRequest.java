@@ -33,6 +33,9 @@ public class BorrowRequest {
         return approved;
     }
     public void approve() { this.approved = true; }
+    public void setApproved(boolean approved) {
+        this.approved = approved;
+    }
 
     @Override
     public String toString(){

@@ -100,6 +100,7 @@ public class Main {
                     library_match.searchAndEditeBook_Librarian(scanner);
                     break;
                 case 4:
+                    library_match.approveBorrowRequest_Librarian(scanner);
                     break;
                 case 5:
                     break;

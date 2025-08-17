@@ -365,4 +365,65 @@ public class Library_Match {
         System.out.println("Book updated successfully !!!");
     }
 
+    public void saBorrowRecordsToFile(){
+        try (BufferedWriter writer =  new BufferedWriter(new FileWriter("borrowRecords.txt"))){
+            for ( BorrowRequest request : borrowRequests){
+                writer.write(
+                        request.toString()
+                );
+                writer.newLine();
+            }
+        } catch (IOException e){
+            System.out.println("Error : " + e.getMessage());
+        }
+    }
+
+    public void approveBorrowRequest_Librarian(Scanner scanner){
+        LocalDate today = LocalDate.now();
+
+        List<BorrowRequest> pendingRequest = new ArrayList<>();
+
+        for (BorrowRequest b : borrowRequests){
+            if (!b.isApproved()){
+                LocalDate startDate = b.getStartDate();
+                if (startDate.equals(today) || startDate.equals(today.minusDays(1))){
+                    pendingRequest.add(b);
+                }
+            }
+        }
+
+        if (pendingRequest.isEmpty()){
+            System.out.println("No pending borrow requests for today or yesterday . ");
+            return;
+        }
+        System.out.println("** Pending Borrow Requests : ");
+        for (int i=0 ; i<pendingRequest.size() ; i++){
+            BorrowRequest br = pendingRequest.get(i);
+            System.out.println((i+1) + ". " + br.getStudent().getFirst_last_Name() +
+                    " | Book : " + br.getBook().getBook_Name() +
+                    " | Start Date : " + br.getStartDate());
+        }
+
+        System.out.println("Enter the request number to approve (0 to cancel) : ");
+        int choice;
+        try {
+            choice = Integer.parseInt(scanner.nextLine());
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input . ");
+            return;
+        }
+        if (choice == 0){
+            System.out.println("Approval cancelled . ");
+            return;
+        }
+        if ( choice < 1 || choice > pendingRequest.size()){
+            System.out.println("Invalid choice . ");
+            return;
+        }
+        BorrowRequest selected = pendingRequest.get(choice-1);
+        selected.setApproved(true);
+        saBorrowRecordsToFile();
+        System.out.println("Borrow request approved successfully !!!");
+    }
+
 }
