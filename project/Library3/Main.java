@@ -106,6 +106,7 @@ public class Main {
                     library_match.showStudentBorrowHistory_Librarian(scanner);
                     break;
                 case 6:
+                    library_match.toggleStatus_Librarian(scanner);
                     break;
                 case 7:
                     break;

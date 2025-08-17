@@ -124,7 +124,9 @@ public class Library_Match {
 
     public void requestBorrowBook_Student(Student currentStudent){
         System.out.println("\n### Borrow Book Request ###");
-
+        if (!currentStudent.isActive()){
+            System.out.println("This student is inactive and cannot borrow books . ");
+        }
         for (int i=0 ; i<books.size() ; i++){
             System.out.println((i+1) + ". " + books.get(i));
         }
@@ -164,6 +166,17 @@ public class Library_Match {
 
     public List<BorrowRequest> getBorrowRequest(){
         return borrowRequests;
+    }
+
+    public boolean toggleStudentStatus(String userName){
+        for (Student student : students){
+            if (student.getUsername().equalsIgnoreCase(userName)){
+                student.setActive(!student.isActive());
+                saveStudents();
+                return true;
+            }
+        }
+        return false;
     }
 
 
@@ -461,6 +474,17 @@ public class Library_Match {
 
         if (totalBorrow == 0){
             System.out.println("The Student nothing Borrowing . ");
+        }
+    }
+
+    public void toggleStatus_Librarian(Scanner scanner){
+        System.out.println("Enter student username to toggle status : ");
+        String stuUser = scanner.nextLine();
+        boolean result = toggleStudentStatus(stuUser);
+        if (result){
+            System.out.println("Student status updated successfully . ");
+        } else {
+            System.out.println("Student not found . ");
         }
     }
 
