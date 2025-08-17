@@ -15,6 +15,10 @@ public class Librarian implements Serializable {
         this.username_Librarian=username_Librarian;
         this.password_Librarian=password_Librarian;
     }
+    public Librarian(String username_Librarian , String password_Librarian){
+        this.username_Librarian=username_Librarian;
+        this.password_Librarian=password_Librarian;
+    }
     public Librarian(){
 
     }

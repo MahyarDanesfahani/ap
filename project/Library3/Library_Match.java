@@ -15,7 +15,7 @@ public class Library_Match {
     private ArrayList<Student> students = new ArrayList<>();
     private ArrayList<Book> books = new ArrayList<>();
     private ArrayList<BorrowRequest> borrowRequests = new ArrayList<>();
-    private ArrayList<Librarian> librarian = new ArrayList<>();
+    private ArrayList<Librarian> librarians = new ArrayList<>();
     private static final String STUDENT_FILE = "students.json" ;
 
     private Scanner scanner = new Scanner(System.in);
@@ -228,7 +228,7 @@ public class Library_Match {
         System.out.println("Enter password : ");
         String password = s.nextLine();
 
-        for (Librarian l : librarian){
+        for (Librarian l : librarians){
             if (l.getUsername_Librarian().equals(username) && l.getPassword_Librarian().equals(password)){
                 System.out.println("*! Welcome " + l.getName_Librarian() +" !*");
                 return l;
@@ -241,7 +241,7 @@ public class Library_Match {
     public void saveLibrarianToFile(){
         try (FileWriter writer =new FileWriter("librarians.json")){
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            gson.toJson(librarian,writer);
+            gson.toJson(librarians,writer);
         } catch (IOException e){
             System.out.println("Error saving librarians : " + e.getMessage());
         }
@@ -514,6 +514,41 @@ public class Library_Match {
             System.out.println("Book returned successfully . ");
         } else {
             System.out.println("No matching borrow record found . ");
+        }
+    }
+
+
+
+    public void addLibrarian_Manager(Scanner scanner){
+        System.out.println("Enter Librarian username : ");
+        String libUser = scanner.nextLine();
+        System.out.println("Enter Librarian password : ");
+        String libpass = scanner.nextLine();
+
+        for (Librarian l : librarians){
+            if (l.getUsername_Librarian().equalsIgnoreCase(libUser) && l.getPassword_Librarian().equalsIgnoreCase(libpass)){
+                System.out.println("Librarian already exists !!!");
+                return;
+            }
+        }
+        Librarian librarian = new Librarian(libUser,libpass);
+        librarians.add(librarian);
+        System.out.println("Librarian added successfully : " + libUser);
+        saveLibrarianToFile();
+    }
+
+    public void loadLibrariansFromFile(){
+        librarians.clear();
+        try (java.util.Scanner sc = new Scanner("librarians.txt")){
+            while (sc.hasNextLine()) {
+                String line = sc.nextLine();
+                String[] parts = line.split(",");
+                if (parts.length == 2){
+                    librarians.add(new Librarian(parts[0] , parts[1]));
+                }
+            }
+        } catch (Exception e) {
+
         }
     }
 

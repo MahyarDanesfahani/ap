@@ -24,6 +24,7 @@ public class Main {
                     LibrarianMenu(scanner,library_match);
                     break;
                 case 4:
+                    ManagerMenu(scanner,library_match);
                     break;
                 default:
                     System.out.println("Invalid choice . Please try again .");
@@ -66,7 +67,7 @@ public class Main {
 
     private static void GuestMenu(Scanner scanner,Library_Match library_match){
         Menu_Guest.Welcome_guest();
-        System.out.println("Your Choice : ");
+        System.out.println("Your Choose : ");
         byte answer_Guest = scanner.nextByte();
 
         switch (answer_Guest){
@@ -112,7 +113,28 @@ public class Main {
                     library_match.returnBookBorrowAndSaveReturnDate_Librarian(scanner);
                     break;
                 default:
+                    System.out.println("Invalid choose .");
             }
         }
     }
+
+    private static void ManagerMenu(Scanner scanner, Library_Match library_match){
+        Menu_Manager.menuWelcome();
+        System.out.println("Your choose : ");
+        int choose = scanner.nextByte();
+        switch (choose){
+            case 1:
+                library_match.addLibrarian_Manager(scanner);
+                break;
+            case 2:
+                break;
+            case 3:
+                break;
+            case 4:
+                break;
+            default:
+                System.out.println("Invalid choice .");
+        }
+    }
+
 }
