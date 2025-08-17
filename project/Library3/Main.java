@@ -109,6 +109,7 @@ public class Main {
                     library_match.toggleStatus_Librarian(scanner);
                     break;
                 case 7:
+                    library_match.returnBookBorrowAndSaveReturnDate_Librarian(scanner);
                     break;
                 default:
             }

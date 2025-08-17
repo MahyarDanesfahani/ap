@@ -488,4 +488,33 @@ public class Library_Match {
         }
     }
 
+    public boolean returnBook(String username,String bookName){
+        for (BorrowRequest request : borrowRequests){
+            if (request.getStudent().getUsername().equalsIgnoreCase(username) &&
+                request.getBook().getBook_Name().equalsIgnoreCase(bookName) &&
+                request.getReturnDate() == null){
+
+                request.setReturnDate(LocalDate.now());
+                request.getBook().setAvailable(true);
+                saBorrowRecordsToFile();
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public void returnBookBorrowAndSaveReturnDate_Librarian(Scanner scanner){
+        System.out.println("Enter Student username : ");
+        String stuUser = scanner.nextLine();
+        System.out.println("Enter Book title to return : ");
+        String bookTitle = scanner.nextLine();
+
+        boolean success = returnBook(stuUser,bookTitle);
+        if (success){
+            System.out.println("Book returned successfully . ");
+        } else {
+            System.out.println("No matching borrow record found . ");
+        }
+    }
+
 }

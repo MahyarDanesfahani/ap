@@ -9,6 +9,7 @@ public class Book {
     private int yearPublication;
     private int quantityAvailable;
     private int Count_Book;
+    private boolean available;
 
     public Book(Scanner scanner){
         System.out.println("Enter the book title : ");
@@ -62,9 +63,12 @@ public class Book {
     public void setYearPublication(int yearPublication) {
         this.yearPublication = yearPublication;
     }
-    public boolean isAvailable() { return quantityAvailable > 0;}
+    public boolean isAvailable() { return this.available = quantityAvailable > 0;}
     public String getCode_Book() {
         return Code_Book;
+    }
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 
     @Override
