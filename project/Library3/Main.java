@@ -103,6 +103,7 @@ public class Main {
                     library_match.approveBorrowRequest_Librarian(scanner);
                     break;
                 case 5:
+                    library_match.showStudentBorrowHistory_Librarian(scanner);
                     break;
                 case 6:
                     break;

@@ -1,12 +1,16 @@
 package project.Library3;
 
+import java.io.Serializable;
+import java.time.Instant;
 import java.time.LocalDate;
 
-public class BorrowRequest {
+public class BorrowRequest implements Serializable {
     private Student student;
     private Book book;
     private LocalDate startDate;
     private LocalDate endDate;
+    private LocalDate returnDate;
+    private boolean returned;
     private boolean approved;
 
     public BorrowRequest(Student student,Book book,LocalDate startDate,LocalDate endDate){
@@ -14,6 +18,14 @@ public class BorrowRequest {
         this.book=book;
         this.startDate=startDate;
         this.endDate=endDate;
+        this.approved=false;
+    }
+    public BorrowRequest(Student student,Book book,LocalDate startDate,LocalDate endDate,boolean returned){
+        this.student=student;
+        this.book=book;
+        this.startDate=startDate;
+        this.endDate=endDate;
+        this.returned=returned;
         this.approved=false;
     }
 
@@ -36,6 +48,19 @@ public class BorrowRequest {
     public void setApproved(boolean approved) {
         this.approved = approved;
     }
+    public boolean isReturned() {
+        return returned;
+    }
+    public void setReturned(boolean returned) {
+        this.returned = returned;
+    }
+    public void setReturnDate(LocalDate returnDate) {
+        this.returnDate = returnDate;
+    }
+    public LocalDate getReturnDate() {
+        return returnDate;
+    }
+
 
     @Override
     public String toString(){
@@ -47,4 +72,5 @@ public class BorrowRequest {
                 ", Approved=" + approved +
                 '}';
     }
+
 }

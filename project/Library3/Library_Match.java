@@ -426,4 +426,42 @@ public class Library_Match {
         System.out.println("Borrow request approved successfully !!!");
     }
 
+    public void showStudentBorrowHistory_Librarian(Scanner scanner){
+        int totalBorrow = 0;
+        int notReturned = 0;
+        int lateReturned = 0;
+
+        System.out.println("Enter The username : ");
+        String studentUsername = scanner.nextLine();
+
+        System.out.println("*** Student Borrow History : " + studentUsername);
+        for (BorrowRequest request : borrowRequests){
+            if (request.getStudent().getUsername().equalsIgnoreCase(studentUsername)){
+                totalBorrow++;
+                System.out.println("The Book name : " + request.getBook().getBook_Name() +
+                        "\n | Start : " + request.getStartDate() +
+                        "\n | End : " + request.getEndDate() +
+                        "\n | Approve is : " + request.isApproved() +
+                        "\n | is Returned : " + request.isReturned());
+                if (!request.isReturned()){
+                    notReturned++;
+                } else {
+                    if (request.isReturned()
+                            && request.getReturnDate() != null
+                            && request.getReturnDate().isAfter(request.getEndDate())){
+                        lateReturned++;
+                    }
+                }
+            }
+        }
+        System.out.println("*** The final : " +
+                "\n1_Total Borrows : " + totalBorrow +
+                "\n2_Total Borrows not return : " + notReturned +
+                "\n3_Total Borrow late return : " + lateReturned);
+
+        if (totalBorrow == 0){
+            System.out.println("The Student nothing Borrowing . ");
+        }
+    }
+
 }
