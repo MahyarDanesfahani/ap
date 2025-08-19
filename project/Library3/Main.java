@@ -130,6 +130,7 @@ public class Main {
                 library_match.showLibrarianReports_Manager(scanner);
                 break;
             case 3:
+                library_match.viewBorrowingStatistics_Manager();
                 break;
             case 4:
                 break;

@@ -588,4 +588,32 @@ public class Library_Match {
         }
     }
 
+    public void viewBorrowingStatistics_Manager(){
+        System.out.println("=== Borrowing Statistics ===");
+
+        int totalRequest = borrowRequests.size();
+        long totalBorrow = borrowRequests.stream()
+                .filter(BorrowRequest :: isApproved)
+                .count();
+
+        long totalDays = 0;
+        long finishedBorrows =0;
+
+        for (BorrowRequest b : borrowRequests){
+            if (b.isApproved() && b.getReturnDate() != null){
+                long days = java.time.temporal.ChronoUnit.DAYS.between(
+                        b.getStartDate(),
+                        b.getReturnDate()
+                );
+                totalDays += days;
+                finishedBorrows ++;
+            }
+        }
+
+        double avgDays = (finishedBorrows > 0 ) ? (double) totalDays/finishedBorrows : 0.0;
+        System.out.println("Total borrow request : " + totalRequest +
+                "\nTotal approved borrow : " + totalBorrow);
+        System.out.printf("\nAvarage borrow duration (days) : %.2f%n" , avgDays);
+    }
+
 }
