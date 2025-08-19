@@ -16,6 +16,7 @@ public class Library_Match {
     private ArrayList<Book> books = new ArrayList<>();
     private ArrayList<BorrowRequest> borrowRequests = new ArrayList<>();
     private ArrayList<Librarian> librarians = new ArrayList<>();
+    private Librarian currentLibrarian;
     private static final String STUDENT_FILE = "students.json" ;
 
     private Scanner scanner = new Scanner(System.in);
@@ -28,7 +29,9 @@ public class Library_Match {
     public Library_Match(){
 
     }
-
+    public Librarian getCurrentLibrarian() {
+        return currentLibrarian;
+    }
 
     public void register_Student(){
         Student new_Student = new Student(scanner);
@@ -231,6 +234,7 @@ public class Library_Match {
         for (Librarian l : librarians){
             if (l.getUsername_Librarian().equals(username) && l.getPassword_Librarian().equals(password)){
                 System.out.println("*! Welcome " + l.getName_Librarian() +" !*");
+                currentLibrarian = l;
                 return l;
             }
         }
@@ -306,6 +310,10 @@ public class Library_Match {
 
         Book newBook = new Book(nameBook,author,code,year,copies);
         books.add(newBook);
+        Librarian logged = getCurrentLibrarian();
+        if (logged != null){
+            logged.incrementBookAdded();
+        }
         saveBookTofile();
         System.out.println("Book added successfully !!!");
     }
@@ -378,7 +386,7 @@ public class Library_Match {
         System.out.println("Book updated successfully !!!");
     }
 
-    public void saBorrowRecordsToFile(){
+    public void saveBorrowRecordsToFile(){
         try (BufferedWriter writer =  new BufferedWriter(new FileWriter("borrowRecords.txt"))){
             for ( BorrowRequest request : borrowRequests){
                 writer.write(
@@ -435,7 +443,11 @@ public class Library_Match {
         }
         BorrowRequest selected = pendingRequest.get(choice-1);
         selected.setApproved(true);
-        saBorrowRecordsToFile();
+        Librarian logged = getCurrentLibrarian();
+        if (logged != null) {
+            logged.incrementBookBorrowed();
+        }
+        saveBorrowRecordsToFile();
         System.out.println("Borrow request approved successfully !!!");
     }
 
@@ -496,7 +508,11 @@ public class Library_Match {
 
                 request.setReturnDate(LocalDate.now());
                 request.getBook().setAvailable(true);
-                saBorrowRecordsToFile();
+                Librarian logged = getCurrentLibrarian();
+                if (logged != null) {
+                    logged.incrementBookReturned();
+                }
+                saveBorrowRecordsToFile();
                 return true;
             }
         }
@@ -549,6 +565,26 @@ public class Library_Match {
             }
         } catch (Exception e) {
 
+        }
+    }
+
+    public Librarian findLibrarian(String username){
+        for (Librarian l : librarians){
+            if (l.getUsername_Librarian().equalsIgnoreCase(username)){
+                return l;
+            }
+        }
+        return null;
+    }
+
+    public void showLibrarianReports_Manager(Scanner scanner){
+        System.out.println("### Enter the username Librarian : ");
+        String useLib = scanner.nextLine();
+        Librarian librarian = findLibrarian(useLib);
+        if (librarian != null) {
+            System.out.println(librarian.getReport());
+        } else {
+            System.out.println("Librarian not found !!!");
         }
     }
 

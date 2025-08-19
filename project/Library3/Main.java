@@ -127,6 +127,7 @@ public class Main {
                 library_match.addLibrarian_Manager(scanner);
                 break;
             case 2:
+                library_match.showLibrarianReports_Manager(scanner);
                 break;
             case 3:
                 break;
