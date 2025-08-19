@@ -133,6 +133,7 @@ public class Main {
                 library_match.viewBorrowingStatistics_Manager();
                 break;
             case 4:
+                library_match.viewAllStudentStatistics_Manager();
                 break;
             default:
                 System.out.println("Invalid choice .");

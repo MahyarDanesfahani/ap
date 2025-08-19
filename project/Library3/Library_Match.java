@@ -2,9 +2,8 @@ package project.Library3;
 
 import java.io.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
@@ -614,6 +613,51 @@ public class Library_Match {
         System.out.println("Total borrow request : " + totalRequest +
                 "\nTotal approved borrow : " + totalBorrow);
         System.out.printf("\nAvarage borrow duration (days) : %.2f%n" , avgDays);
+    }
+
+    public void viewAllStudentStatistics_Manager(){
+        System.out.println("=== All Students Statistics ===");
+
+        if (students.isEmpty()){
+            System.out.println("No students registered .");
+            return;
+        }
+
+        Map<Student,Long> delayedCountMap = new HashMap<>();
+
+        for (Student s : students){
+            long totalBorrow = borrowRequests.stream()
+                    .filter(br -> br.getStudent().getUsername().equals(s.getUsername()))
+                    .count();
+            long notReturned = borrowRequests.stream()
+                    .filter(br -> br.getStudent().getUsername().equals(s.getUsername())
+                        && br.isApproved()
+                        && br.getReturnDate() == null)
+                    .count();
+            long delayedReturns = borrowRequests.stream()
+                    .filter(br -> br.getStudent().getUsername().equals(s.getUsername())
+                        && br.isApproved()
+                        && br.getReturnDate() != null
+                        && br.getReturnDate().isAfter(br.getEndDate()))
+                    .count();
+
+            delayedCountMap.put(s,delayedReturns);
+
+            System.out.println("\n*** Student : ***" + s.getFirst_last_Name() + "(" + s.getUsername() + ") ---" +
+                    "\nTotal borrow requests : " + totalBorrow +
+                    "\nTotal not returned books : " + notReturned +
+                    "\nTotal delayed returns : " + delayedReturns);
+        }
+
+        System.out.println("\n=== Top 10 Students with Most Delayed Returns ===");
+        delayedCountMap.entrySet().stream()
+                .sorted(Map.Entry.<Student,Long>comparingByValue().reversed())
+                .limit(10)
+                .forEach(entry -> {
+                    Student st = entry.getKey();
+                    long count = entry.getValue();
+                    System.out.println(st.getFirst_last_Name() + " (" +st.getUsername() + " )  - Delayed Returns : " + count);
+                });
     }
 
 }
