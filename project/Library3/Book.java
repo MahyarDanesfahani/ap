@@ -17,12 +17,13 @@ public class Book {
         System.out.println("Enter the author's name : ");
         this.Author_Name = scanner.nextLine();
         System.out.println("Enter the year of publication : ");
-        this.yearPublication = scanner.nextInt();
+        this.yearPublication = Integer.parseInt(scanner.nextLine());
         System.out.println("Enter the code Book :");
         this.Code_Book = scanner.nextLine();
         System.out.println("Enter the number of copies available : ");
-        this.quantityAvailable = scanner.nextInt();
+        this.quantityAvailable = Integer.parseInt(scanner.nextLine());
         this.Count_Book += 1 ;
+        this.available = this.quantityAvailable > 0 ;
     }
 
     public Book(String bookName , String authorName,String code_Book ,int yearPublication , int quantityAvailable){
@@ -31,6 +32,7 @@ public class Book {
         this.Code_Book=code_Book;
         this.yearPublication=yearPublication;
         this.quantityAvailable=quantityAvailable;
+        this.available = this.quantityAvailable > 0;
     }
 
     public String getBook_Name() {

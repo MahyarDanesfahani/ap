@@ -10,8 +10,9 @@ public class Student {
     private String studentNumber;
     private String fieldOfStudy;
     private int Count_Student = 0;
-    private boolean active;
+    private boolean active = true;
 
+    public Student(){}
     public Student(Scanner scanner){
         System.out.println("Enter full Name : ");
         this.first_last_Name = scanner.nextLine();

@@ -10,7 +10,7 @@ import com.google.gson.reflect.TypeToken;
 
 public class Library_Match {
 
-    String Name_Library ;
+    private String Name_Library = "Zanjan Library";
     private ArrayList<Student> students = new ArrayList<>();
     private ArrayList<Book> books = new ArrayList<>();
     private ArrayList<BorrowRequest> borrowRequests = new ArrayList<>();
@@ -31,6 +31,41 @@ public class Library_Match {
     public Librarian getCurrentLibrarian() {
         return currentLibrarian;
     }
+
+
+    private static Gson gson(){
+        return new GsonBuilder()
+                .registerTypeAdapter(LocalDate.class , new LocalDateAdapter())
+                .setPrettyPrinting()
+                .create();
+    }
+
+    public void saveAllData(){
+        try (Writer w = new FileWriter("library.txt")){
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            gson.toJson(this,w);
+        } catch (IOException e){
+            e.printStackTrace();
+        }
+    }
+
+    public static Library_Match loadAllData(){
+        try (Reader r = new FileReader("library.txt")){
+            Gson gson = new Gson();
+            Library_Match lib = gson().fromJson(r,Library_Match.class);
+            if (lib == null) {
+                lib = new Library_Match("Zanjan Library");
+            }
+            lib.scanner = new Scanner(System.in);
+            return lib;
+        } catch (IOException e) {
+            Library_Match lib = new Library_Match("Zanjan Library");
+            lib.scanner = new Scanner(System.in);
+            return lib;
+        }
+    }
+
+
 
     public void register_Student(){
         Student new_Student = new Student(scanner);
@@ -64,28 +99,68 @@ public class Library_Match {
         }
     }
 
-    public void loginStudent(){
+    public Student loginStudent() {
         System.out.println("Enter username : ");
         String username = scanner.nextLine();
         System.out.println("Enter password : ");
         String passInput = scanner.nextLine();
 
-        for (Student s : students){
-            if (s.getUsername().equalsIgnoreCase(username)){
-                if (!s.isActive()){
+        for (Student s : students) {
+            if (s.getUsername().equalsIgnoreCase(username) && String.valueOf(s.getPassword()).equals(passInput)) {
+                if (!s.isActive()) {
                     System.out.println("Your account is inactive . Please contact the library .");
-                    return;
+                    return null;
                 }
-                if (String.valueOf(s.getPassword()).equals(passInput)){
-                    System.out.println("Login successful . Welcome, " + s.getFirst_last_Name() + "!");
-                    return;
-                } else {
-                    System.out.println("Incorrect password .");
-                    return;
-                }
+                System.out.println("Login successful. Welcome, " + s.getFirst_last_Name());
+                return s;
             }
         }
         System.out.println("No student found with that username . ");
+        return null;
+    }
+
+    public void viewStudentHistory(Student student){
+        System.out.println("=== Borrow History for "+student.getFirst_last_Name() + "===");
+        boolean found = false;
+
+        for (BorrowRequest br : borrowRequests){
+            if (br.getStudent().getUsername().equals(student.getUsername())){
+                found=true;
+                System.out.println("Book : " + br.getBook().getBook_Name() +
+                        "\n | Stsrt : " + br.getStartDate() +
+                        "\n | End : " + br.getEndDate() +
+                        "\n | Returned : " + (br.getReturnDate() != null ? br.getReturnDate() : "Not yet" ));
+            }
+        }
+        if (!found){
+            System.out.println("No borrow records found for this student .");
+        }
+    }
+
+    public void studentLoggedInMenu(Scanner scanner , Student student){
+        boolean exit = false;
+        while (!exit){
+            Menu_Student.Student_Login_Menu(student.getFirst_last_Name());
+            System.out.println("Select option : ");
+            int choice = scanner.nextInt();
+            scanner.nextLine();
+            switch (choice){
+                case 1:
+                    searchBook_Student();
+                    break;
+                case 2:
+                    requestBorrowBook_Student(student);
+                    break;
+                case 3:
+                    viewStudentHistory(student);
+                case 0:
+                    exit = true;
+                    System.out.println("Logged out ....");
+                    break;
+                default:
+                    System.out.println("Invalid option . Try again .");
+            }
+        }
     }
 
     public void searchBook_Student(){
@@ -182,6 +257,7 @@ public class Library_Match {
     }
 
 
+
     public void viewStudentCount_Guest(){
         System.out.println("Total registered students: " + students.size());
     }
@@ -221,6 +297,7 @@ public class Library_Match {
             }
         }
     }
+
 
 
     public Librarian login_Librarian(){
@@ -535,20 +612,25 @@ public class Library_Match {
 
 
     public void addLibrarian_Manager(Scanner scanner){
-        System.out.println("Enter Librarian username : ");
-        String libUser = scanner.nextLine();
-        System.out.println("Enter Librarian password : ");
-        String libpass = scanner.nextLine();
+        System.out.print("Enter librarian name: ");
+        String name = scanner.nextLine();
+
+        System.out.print("Enter username: ");
+        String username = scanner.nextLine();
+
+        System.out.print("Enter password: ");
+        String password = scanner.nextLine();
+
 
         for (Librarian l : librarians){
-            if (l.getUsername_Librarian().equalsIgnoreCase(libUser) && l.getPassword_Librarian().equalsIgnoreCase(libpass)){
+            if (l.getUsername_Librarian().equalsIgnoreCase(username) && l.getPassword_Librarian().equalsIgnoreCase(password)){
                 System.out.println("Librarian already exists !!!");
                 return;
             }
         }
-        Librarian librarian = new Librarian(libUser,libpass);
+        Librarian librarian = new Librarian(name ,username,password);
         librarians.add(librarian);
-        System.out.println("Librarian added successfully : " + libUser);
+        System.out.println("Librarian added successfully : " + name);
         saveLibrarianToFile();
     }
 
