@@ -1,17 +1,11 @@
 package project.To_Do_List;
 
-import java.io.File;
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.io.*;
+import java.util.*;
 
 public class TaskManager {
-    private final String FILE_NAME = "tasks.xlsx";
-    private java.util.List<Task> tasks;
+    private final String FILE_NAME = "tasks.csv";
+    private List<Task> tasks;
 
     public TaskManager() {
         tasks = new ArrayList<>();
@@ -23,78 +17,54 @@ public class TaskManager {
     }
 
     private void createSampleTasks() {
-        try (Workbook workbook = new XSSFWorkbook()) {
-            Sheet sheet = workbook.createSheet("Tasks");
-            Row header = sheet.createRow(0);
-            header.createCell(0).setCellValue("TaskName");
-            header.createCell(1).setCellValue("EstimatedTime");
-            header.createCell(2).setCellValue("ActualTime");
-            header.createCell(3).setCellValue("IsDone");
-
+        try (PrintWriter pw = new PrintWriter(new FileWriter(FILE_NAME))) {
+            pw.println("TaskName,EstimatedTime,ActualTime,IsDone");
             for (int i = 1; i <= 20; i++) {
-                Row row = sheet.createRow(i);
-                row.createCell(0).setCellValue("Task " + i);
-                row.createCell(1).setCellValue(2 * i);
-                row.createCell(2).setCellValue(0);
-                row.createCell(3).setCellValue(false);
-            }
-            try (FileOutputStream fos = new FileOutputStream(FILE_NAME)) {
-                workbook.write(fos);
+                pw.println("Task " + i + "," + (2 * i) + ",0,false");
             }
         } catch (IOException e) {
-            System.out.println("Error");
+            System.out.println("Error creating sample tasks.");
         }
     }
 
     private void loadTasks() {
-        try (FileInputStream fis = new FileInputStream(FILE_NAME);
-             Workbook workbook = new XSSFWorkbook(fis)) {
-            Sheet sheet = workbook.getSheetAt(0);
-            tasks.clear();
-            for (int i = 1; i <= sheet.getLastRowNum(); i++) {
-                Row row = sheet.getRow(i);
-                String name = row.getCell(0).getStringCellValue();
-                int estimated = (int) row.getCell(1).getNumericCellValue();
-                int actual = (int) row.getCell(2).getNumericCellValue();
-                boolean done = row.getCell(3).getBooleanCellValue();
-                tasks.add(new Task(name, estimated, actual, done));
+        tasks.clear();
+        try (BufferedReader br = new BufferedReader(new FileReader(FILE_NAME))) {
+            String line = br.readLine(); // skip header
+            while ((line = br.readLine()) != null) {
+                String[] parts = line.split(",");
+                if (parts.length == 4) {
+                    String name = parts[0];
+                    int estimated = Integer.parseInt(parts[1]);
+                    int actual = Integer.parseInt(parts[2]);
+                    boolean done = Boolean.parseBoolean(parts[3]);
+                    tasks.add(new Task(name, estimated, actual, done));
+                }
             }
         } catch (IOException e) {
-            System.out.println("Error");
+            System.out.println("Error loading tasks.");
         }
     }
 
     public void saveTasks() {
-        try (Workbook workbook = new XSSFWorkbook()) {
-            Sheet sheet = workbook.createSheet("Tasks");
-            Row header = sheet.createRow(0);
-            header.createCell(0).setCellValue("TaskName");
-            header.createCell(1).setCellValue("EstimatedTime");
-            header.createCell(2).setCellValue("ActualTime");
-            header.createCell(3).setCellValue("IsDone");
-
-            for (int i = 0; i < tasks.size(); i++) {
-                Row row = sheet.createRow(i + 1);
-                Task task = tasks.get(i);
-                row.createCell(0).setCellValue(task.getTaskName());
-                row.createCell(1).setCellValue(task.getEstimatedTime());
-                row.createCell(2).setCellValue(task.getActualTime());
-                row.createCell(3).setCellValue(task.isDone());
-            }
-            try (FileOutputStream fos = new FileOutputStream(FILE_NAME)) {
-                workbook.write(fos);
+        try (PrintWriter pw = new PrintWriter(new FileWriter(FILE_NAME))) {
+            pw.println("TaskName,EstimatedTime,ActualTime,IsDone");
+            for (Task task : tasks) {
+                pw.println(task.getTaskName() + "," +
+                        task.getEstimatedTime() + "," +
+                        task.getActualTime() + "," +
+                        task.isDone());
             }
         } catch (IOException e) {
-            System.out.println("Error");
+            System.out.println("Error saving tasks.");
         }
     }
 
-    public List<Task> getTasks() {
-        return tasks;
-    }
+    public List<Task> getTasks() { return tasks; }
 
     public void addTask(Task task) {
         tasks.add(task);
         saveTasks();
     }
 }
+

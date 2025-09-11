@@ -16,8 +16,7 @@ public class LoginFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        JPanel panel = new JPanel();
-        panel.setLayout(new GridLayout(4, 2, 10, 10));
+        JPanel panel = new JPanel(new GridLayout(4, 2, 10, 10));
 
         JLabel userLabel = new JLabel("نام کاربری : ");
         JTextField userText = new JTextField();
@@ -47,6 +46,8 @@ public class LoginFrame extends JFrame {
                 User user = userManager.login(username, password);
                 if (user != null) {
                     JOptionPane.showMessageDialog(LoginFrame.this, "ورود موفقیت‌آمیز بود! خوش آمدید " + user.getFullName());
+                    new MainMenuFrame(user, userManager);
+                    dispose();
                 } else {
                     messageLabel.setText("نام کاربری یا رمز اشتباه است !!! ");
                 }
@@ -61,3 +62,4 @@ public class LoginFrame extends JFrame {
         });
     }
 }
+

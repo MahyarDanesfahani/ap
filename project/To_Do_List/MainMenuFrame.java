@@ -2,6 +2,8 @@ package project.To_Do_List;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainMenuFrame extends JFrame {
     private User currentUser;
@@ -41,9 +43,9 @@ public class MainMenuFrame extends JFrame {
         infoButton.addActionListener(e -> showUserInfo());
         changePassButton.addActionListener(e -> changePassword());
         showTasksButton.addActionListener(e -> showAllTasks());
-        showDoneTasksButton.addActionListener(e -> JOptionPane.showMessageDialog(this, "این بخش به زودی اضافه می‌شود."));
-        addTaskButton.addActionListener(e -> JOptionPane.showMessageDialog(this, "این بخش به زودی اضافه می‌شود."));
-        editTaskButton.addActionListener(e -> JOptionPane.showMessageDialog(this, "این بخش به زودی اضافه می‌شود."));
+        showDoneTasksButton.addActionListener(e -> showDoneTasks());
+        addTaskButton.addActionListener(e -> addTask());
+        editTaskButton.addActionListener(e -> editTask());
         exitButton.addActionListener(e -> System.exit(0));
 
         setVisible(true);
@@ -80,5 +82,66 @@ public class MainMenuFrame extends JFrame {
         JTable table = new JTable(data, columns);
         JScrollPane scrollPane = new JScrollPane(table);
         JOptionPane.showMessageDialog(this, scrollPane, "لیست تمام کارها", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void showDoneTasks() {
+        java.util.List<Task> tasks = taskManager.getTasks();
+        List<String[]> doneList = new ArrayList<>();
+        for (Task t : tasks) {
+            if (t.isDone()) {
+                doneList.add(new String[]{t.getTaskName(),
+                        String.valueOf(t.getEstimatedTime()),
+                        String.valueOf(t.getActualTime())});
+            }
+        }
+
+        if (doneList.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "هیچ کاری انجام نشده است.");
+            return;
+        }
+
+        String[] columns = {"نام کار", "زمان تخمینی", "زمان انجام شده"};
+        String[][] data = doneList.toArray(new String[0][]);
+        JTable table = new JTable(data, columns);
+        JScrollPane scrollPane = new JScrollPane(table);
+        JOptionPane.showMessageDialog(this, scrollPane, "لیست کارهای انجام شده", JOptionPane.INFORMATION_MESSAGE);
+    }
+
+    private void addTask() {
+        String name = JOptionPane.showInputDialog(this, "نام کار جدید:");
+        if (name == null || name.trim().isEmpty()) return;
+        String estStr = JOptionPane.showInputDialog(this, "زمان تخمینی (ساعت):");
+        try {
+            int est = Integer.parseInt(estStr);
+            Task newTask = new Task(name, est, 0, false);
+            taskManager.addTask(newTask);
+            JOptionPane.showMessageDialog(this, "کار جدید با موفقیت اضافه شد.");
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "عدد معتبر وارد کنید!");
+        }
+    }
+
+    private void editTask() {
+        String name = JOptionPane.showInputDialog(this, "نام کار برای ویرایش:");
+        if (name == null || name.trim().isEmpty()) return;
+
+        for (Task t : taskManager.getTasks()) {
+            if (t.getTaskName().equalsIgnoreCase(name)) {
+                try {
+                    String actualStr = JOptionPane.showInputDialog(this, "زمان واقعی انجام (ساعت):", t.getActualTime());
+                    int actual = Integer.parseInt(actualStr);
+                    t.setActualTime(actual);
+                    int confirm = JOptionPane.showConfirmDialog(this, "آیا کار انجام شده است؟", "وضعیت", JOptionPane.YES_NO_OPTION);
+                    t.setDone(confirm == JOptionPane.YES_OPTION);
+                    taskManager.saveTasks();
+                    JOptionPane.showMessageDialog(this, "کار با موفقیت ویرایش شد.");
+                    return;
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(this, "عدد معتبر وارد کنید!");
+                    return;
+                }
+            }
+        }
+        JOptionPane.showMessageDialog(this, "کاری با این نام پیدا نشد.");
     }
 }

@@ -17,7 +17,7 @@ public class Main {
             String password = scanner.nextLine();
             currentUser = userManager.login(username, password);
             if (currentUser == null) {
-                System.out.println("Username or Password not find!!");
+                System.out.println("Username or Password not found!!");
             }
         }
 
@@ -44,58 +44,61 @@ public class Main {
                     System.out.print("New Password : ");
                     String newPass = scanner.nextLine();
                     userManager.changePassword(currentUser, newPass);
-                    System.out.println("Done!!! ");
+                    System.out.println("Password changed successfully!");
                     break;
                 case 3:
                     for (Task t : taskManager.getTasks()) {
-                        System.out.println(t.getTaskName() + " Estimated Time: | " + t.getEstimatedTime() + " Done in: | " + t.getActualTime() + " Status: | " + (t.isDone() ? "✔" : "✖"));
+                        System.out.println(t.getTaskName() +
+                                " | Estimated: " + t.getEstimatedTime() +
+                                " | Actual: " + t.getActualTime() +
+                                " | Status: " + (t.isDone() ? "✔" : "✖"));
                     }
                     break;
                 case 4:
                     for (Task t : taskManager.getTasks()) {
                         if (t.isDone()) {
-                            System.out.println(t.getTaskName() + " Done in: | " + t.getActualTime() + "Clock . ");
+                            System.out.println(t.getTaskName() + " | Done in " + t.getActualTime() + " hours.");
                         }
                     }
                     break;
                 case 5:
-                    System.out.print("New task name :");
+                    System.out.print("New task name : ");
                     String name = scanner.nextLine();
-                    System.out.print("Estimated Time (clock) :");
+                    System.out.print("Estimated Time (hours) : ");
                     int est = Integer.parseInt(scanner.nextLine());
                     Task newTask = new Task(name, est, 0, false);
                     taskManager.addTask(newTask);
-                    System.out.println("Done!!!");
+                    System.out.println("Task added!");
                     break;
                 case 6:
-                    System.out.print("Name task for Edit : ");
+                    System.out.print("Task name for edit : ");
                     String editName = scanner.nextLine();
                     boolean found = false;
                     for (Task t : taskManager.getTasks()) {
                         if (t.getTaskName().equalsIgnoreCase(editName)) {
-                            System.out.print("Time to do the task (clock) : ");
+                            System.out.print("Actual Time (hours): ");
                             int actual = Integer.parseInt(scanner.nextLine());
                             t.setActualTime(actual);
-                            System.out.print("Is the work done ? (true/false): ");
+                            System.out.print("Is the task done? (true/false): ");
                             boolean done = Boolean.parseBoolean(scanner.nextLine());
                             t.setDone(done);
                             taskManager.saveTasks();
-                            System.out.println("Change Done!!!");
+                            System.out.println("Task updated!");
                             found = true;
                             break;
                         }
                     }
                     if (!found) {
-                        System.out.println("Not find task!!!!!");
+                        System.out.println("Task not found!");
                     }
                     break;
                 case 7:
                     exit = true;
                     break;
                 default:
-                    System.out.println("Not find!!!");
+                    System.out.println("Invalid choice!");
             }
         }
-        System.out.println("Exit.....(Good Lock)");
+        System.out.println("Exit.....(Good Luck)");
     }
 }
