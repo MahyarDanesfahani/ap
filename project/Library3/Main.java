@@ -51,7 +51,7 @@ public class Main {
                     library_match.register_Student();
                     break;
                 case 2:
-                    Student current = library_match.loginStudent();
+                    Student current = library_match.login_Student();
                     if (current != null) {
                         library_match.studentLoggedInMenu(scanner, current);
                     }

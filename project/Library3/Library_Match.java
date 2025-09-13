@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 
-public class Library_Match {
+public class Library_Match implements LibraryOperations {
 
     private String Name_Library = "Zanjan Library";
     private ArrayList<Student> students = new ArrayList<>();
@@ -39,7 +39,7 @@ public class Library_Match {
                 .setPrettyPrinting()
                 .create();
     }
-
+    @Override
     public void saveAllData(){
         try (Writer w = new FileWriter("library.txt")){
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
@@ -48,7 +48,6 @@ public class Library_Match {
             e.printStackTrace();
         }
     }
-
     public static Library_Match loadAllData(){
         try (Reader r = new FileReader("library.txt")){
             Gson gson = new Gson();
@@ -66,7 +65,7 @@ public class Library_Match {
     }
 
 
-
+    @Override
     public void register_Student(){
         Student new_Student = new Student(scanner);
         for (Student s : students){
@@ -98,8 +97,8 @@ public class Library_Match {
             students = new ArrayList<>();
         }
     }
-
-    public Student loginStudent() {
+    @Override
+    public Student login_Student() {
         System.out.println("Enter username : ");
         String username = scanner.nextLine();
         System.out.println("Enter password : ");
@@ -162,7 +161,7 @@ public class Library_Match {
             }
         }
     }
-
+    @Override
     public void searchBook_Student(){
         System.out.println("\n*** Search Book ***" +
                 "\nLeave any field empty if you don't want to filter by it ." +
@@ -198,7 +197,7 @@ public class Library_Match {
         }
 
     }
-
+    @Override
     public void requestBorrowBook_Student(Student currentStudent){
         System.out.println("\n### Borrow Book Request ###");
         if (!currentStudent.isActive()){
@@ -244,7 +243,7 @@ public class Library_Match {
     public List<BorrowRequest> getBorrowRequest(){
         return borrowRequests;
     }
-
+    @Override
     public boolean toggleStudentStatus(String userName){
         for (Student student : students){
             if (student.getUsername().equalsIgnoreCase(userName)){
@@ -257,11 +256,11 @@ public class Library_Match {
     }
 
 
-
+    @Override
     public void viewStudentCount_Guest(){
         System.out.println("Total registered students: " + students.size());
     }
-
+    @Override
     public void searchBook_Guest(){
         System.out.println("Enter the book title to search: ");
         String title = scanner.nextLine();
@@ -278,7 +277,7 @@ public class Library_Match {
             System.out.println("No book found with that title . ");
         }
     }
-
+    @Override
     public void viewLibraryStatistics_Guest(){
         System.out.println("===== Library Statistics =====" +
                 "\nTotal Students : " + students.size() +
@@ -299,7 +298,7 @@ public class Library_Match {
     }
 
 
-
+    @Override
     public Librarian login_Librarian(){
         Scanner s = new Scanner(System.in);
         System.out.println("Enter username : ");
@@ -326,7 +325,7 @@ public class Library_Match {
             System.out.println("Error saving librarians : " + e.getMessage());
         }
     }
-
+    @Override
     public void changePassword_Librarian(Librarian librarian,Scanner scanner){
         System.out.println("Enter current password: ");
         String oldPassword = scanner.nextLine();
@@ -351,7 +350,7 @@ public class Library_Match {
             System.out.println("Error saving books : " + e.getMessage());
         }
     }
-
+    @Override
     public void addBook_Librarian(Scanner scanner){
         System.out.println("=== Add New Book ===");
         System.out.println("Enter the code_Book : ");
@@ -393,7 +392,7 @@ public class Library_Match {
         saveBookTofile();
         System.out.println("Book added successfully !!!");
     }
-
+    @Override
     public void searchAndEditeBook_Librarian(Scanner scanner){
         System.out.println("Enter code or name Book : ");
         String  key = scanner.nextLine();
@@ -474,7 +473,7 @@ public class Library_Match {
             System.out.println("Error : " + e.getMessage());
         }
     }
-
+    @Override
     public void approveBorrowRequest_Librarian(Scanner scanner){
         LocalDate today = LocalDate.now();
 
@@ -564,7 +563,7 @@ public class Library_Match {
             System.out.println("The Student nothing Borrowing . ");
         }
     }
-
+    @Override
     public void toggleStatus_Librarian(Scanner scanner){
         System.out.println("Enter student username to toggle status : ");
         String stuUser = scanner.nextLine();
@@ -575,7 +574,7 @@ public class Library_Match {
             System.out.println("Student not found . ");
         }
     }
-
+    @Override
     public boolean returnBook(String username,String bookName){
         for (BorrowRequest request : borrowRequests){
             if (request.getStudent().getUsername().equalsIgnoreCase(username) &&
@@ -594,7 +593,7 @@ public class Library_Match {
         }
         return false;
     }
-
+    @Override
     public void returnBookBorrowAndSaveReturnDate_Librarian(Scanner scanner){
         System.out.println("Enter Student username : ");
         String stuUser = scanner.nextLine();
@@ -610,7 +609,7 @@ public class Library_Match {
     }
 
 
-
+    @Override
     public void addLibrarian_Manager(Scanner scanner){
         System.out.print("Enter librarian name: ");
         String name = scanner.nextLine();
@@ -657,7 +656,7 @@ public class Library_Match {
         }
         return null;
     }
-
+    @Override
     public void showLibrarianReports_Manager(Scanner scanner){
         System.out.println("### Enter the username Librarian : ");
         String useLib = scanner.nextLine();
@@ -668,7 +667,7 @@ public class Library_Match {
             System.out.println("Librarian not found !!!");
         }
     }
-
+    @Override
     public void viewBorrowingStatistics_Manager(){
         System.out.println("=== Borrowing Statistics ===");
 
@@ -696,7 +695,7 @@ public class Library_Match {
                 "\nTotal approved borrow : " + totalBorrow);
         System.out.printf("\nAvarage borrow duration (days) : %.2f%n" , avgDays);
     }
-
+    @Override
     public void viewAllStudentStatistics_Manager(){
         System.out.println("=== All Students Statistics ===");
 
