@@ -198,38 +198,62 @@ public class Library_Match implements LibraryOperations {
 
     }
     @Override
-    public void requestBorrowBook_Student(Student currentStudent){
+    public void requestBorrowBook_Student(Student currentStudent) {
         System.out.println("\n### Borrow Book Request ###");
-        if (!currentStudent.isActive()){
-            System.out.println("This student is inactive and cannot borrow books . ");
-        }
-        for (int i=0 ; i<books.size() ; i++){
-            System.out.println((i+1) + ". " + books.get(i));
-        }
-        System.out.println("Enter book number to request : ");
-        int choice = Integer.parseInt(scanner.nextLine()) - 1;
 
-        if (choice < 0 || choice >= books.size()){
-            System.out.println("Invalid selection .");
+        if (!currentStudent.isActive()) {
+            System.out.println("This student is inactive and cannot borrow books.");
+            return;
+        }
+
+        if (books.isEmpty()) {
+            System.out.println("No books available.");
+            return;
+        }
+
+        for (int i = 0; i < books.size(); i++) {
+            System.out.println((i + 1) + ". " + books.get(i));
+        }
+
+        System.out.println("Enter book number to request: ");
+        int choice;
+        try {
+            choice = Integer.parseInt(scanner.nextLine()) - 1;
+        } catch (NumberFormatException e) {
+            System.out.println("Invalid input.");
+            return;
+        }
+
+        if (choice < 0 || choice >= books.size()) {
+            System.out.println("Invalid selection.");
             return;
         }
 
         Book selectedBook = books.get(choice);
-        if (!selectedBook.isAvailable()){
-            System.out.println("Sorry, this book is not available right now .");
+
+        if (!selectedBook.isAvailable()) {
+            System.out.println("Sorry, this book is not available right now.");
             return;
         }
 
-        System.out.println("Enter start date (YYYY-MM-DD) : ");
-        LocalDate start = LocalDate.parse(scanner.nextLine());
-        System.out.println("Enter end date (YYYY-MM-DD) : ");
-        LocalDate end = LocalDate.parse(scanner.nextLine());
+        LocalDate start = LocalDate.now();
+        System.out.println("Start date is set to today: " + start);
 
-        BorrowRequest request = new BorrowRequest(currentStudent,selectedBook,start,end);
+        System.out.println("Enter end date (YYYY-MM-DD): ");
+        LocalDate end;
+        try {
+            end = LocalDate.parse(scanner.nextLine());
+        } catch (Exception e) {
+            System.out.println("Invalid date format. Request cancelled.");
+            return;
+        }
+
+        BorrowRequest request = new BorrowRequest(currentStudent, selectedBook, start, end);
         borrowRequests.add(request);
-        System.out.println("Your request has been submitted and is pending approval .");
 
+        System.out.println("Your request has been submitted and is pending approval.");
     }
+
 
     public Student findStudentByID(String id){
         for (Student s : students){
@@ -474,57 +498,73 @@ public class Library_Match implements LibraryOperations {
         }
     }
     @Override
-    public void approveBorrowRequest_Librarian(Scanner scanner){
-        LocalDate today = LocalDate.now();
-
+    public void approveBorrowRequest_Librarian(Scanner scanner) {
         List<BorrowRequest> pendingRequest = new ArrayList<>();
 
-        for (BorrowRequest b : borrowRequests){
-            if (!b.isApproved()){
-                LocalDate startDate = b.getStartDate();
-                if (startDate.equals(today) || startDate.equals(today.minusDays(1))){
-                    pendingRequest.add(b);
-                }
+        for (BorrowRequest b : borrowRequests) {
+            if (!b.isApproved()) {
+                pendingRequest.add(b);
             }
         }
 
-        if (pendingRequest.isEmpty()){
-            System.out.println("No pending borrow requests for today or yesterday . ");
+        if (pendingRequest.isEmpty()) {
+            System.out.println("No pending borrow requests.");
             return;
         }
-        System.out.println("** Pending Borrow Requests : ");
-        for (int i=0 ; i<pendingRequest.size() ; i++){
+
+        System.out.println("** Pending Borrow Requests: ");
+        for (int i = 0; i < pendingRequest.size(); i++) {
             BorrowRequest br = pendingRequest.get(i);
-            System.out.println((i+1) + ". " + br.getStudent().getFirst_last_Name() +
-                    " | Book : " + br.getBook().getBook_Name() +
-                    " | Start Date : " + br.getStartDate());
+            System.out.println((i + 1) + ". " + br.getStudent().getFirst_last_Name() +
+                    " | Book: " + br.getBook().getBook_Name() +
+                    " | Start Date: " + br.getStartDate());
         }
 
-        System.out.println("Enter the request number to approve (0 to cancel) : ");
+        System.out.println("Enter the request number to approve (0 to cancel): ");
         int choice;
         try {
             choice = Integer.parseInt(scanner.nextLine());
         } catch (NumberFormatException e) {
-            System.out.println("Invalid input . ");
+            System.out.println("Invalid input.");
             return;
         }
-        if (choice == 0){
-            System.out.println("Approval cancelled . ");
+
+        if (choice == 0) {
+            System.out.println("Approval cancelled.");
             return;
         }
-        if ( choice < 1 || choice > pendingRequest.size()){
-            System.out.println("Invalid choice . ");
+        if (choice < 1 || choice > pendingRequest.size()) {
+            System.out.println("Invalid choice.");
             return;
         }
-        BorrowRequest selected = pendingRequest.get(choice-1);
+
+        BorrowRequest selected = pendingRequest.get(choice - 1);
         selected.setApproved(true);
+        selected.getBook().setAvailable(false); // book is now borrowed
+
         Librarian logged = getCurrentLibrarian();
         if (logged != null) {
             logged.incrementBookBorrowed();
         }
-        saveBorrowRecordsToFile();
-        System.out.println("Borrow request approved successfully !!!");
+
+        saveBorrowRequests();
+        System.out.println("Borrow request approved successfully!");
     }
+
+    private void saveBorrowRequests() {
+        try (Writer writer = new FileWriter("borrowRequests.json")) {
+            Gson gson = new GsonBuilder()
+                    .registerTypeAdapter(LocalDate.class, new LocalDateAdapter()) // برای تاریخ‌ها
+                    .setPrettyPrinting()
+                    .create();
+            gson.toJson(borrowRequests, writer);
+        } catch (IOException e) {
+            System.out.println("Error saving borrow requests: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+
 
     public void showStudentBorrowHistory_Librarian(Scanner scanner){
         int totalBorrow = 0;
