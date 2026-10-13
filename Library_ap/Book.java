@@ -1,7 +1,5 @@
 package project.Library3;
 
-import java.util.Scanner;
-
 public class Book {
     private String Book_Name;
     private String Author_Name;
@@ -9,20 +7,6 @@ public class Book {
     private int yearPublication;
     private int quantityAvailable;
     private int Count_Book;
-
-    public Book(Scanner scanner){
-        System.out.println("Enter the book title : ");
-        this.Book_Name = scanner.nextLine();
-        System.out.println("Enter the author's name : ");
-        this.Author_Name = scanner.nextLine();
-        System.out.println("Enter the year of publication : ");
-        this.yearPublication = InputUtil.readInt(scanner);
-        System.out.println("Enter the code Book :");
-        this.Code_Book = scanner.nextLine();
-        System.out.println("Enter the number of copies available : ");
-        this.quantityAvailable = InputUtil.readInt(scanner);
-        this.Count_Book += 1 ;
-    }
 
     public Book(String bookName , String authorName,String code_Book ,int yearPublication , int quantityAvailable){
         this.Book_Name=bookName;

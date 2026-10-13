@@ -1,0 +1,15 @@
+{
+  "Name_Library": "Zanjan Library",
+  "students": [
+    {"first_last_Name": "Old Student", "username": "oldstu", "password": "1111", "studentNumber": "401", "fieldOfStudy": "Math", "Count_Student": 0, "active": true}
+  ],
+  "books": [
+    {"Book_Name": "Old Book", "Author_Name": "Old Author", "Code_Book": "OLD1", "yearPublication": 2001, "quantityAvailable": 3, "Count_Book": 0}
+  ],
+  "librarians": [
+    {"Name_Librarian": "Old Lib", "username_Librarian": "oldlib", "password_Librarian": "oldpass", "bookAdded": 5, "bookBorrowed": 2, "bookReturned": 1}
+  ],
+  "borrowRequests": [
+    {"id": 0, "student": {"first_last_Name": "Old Student", "username": "oldstu", "password": "1111", "studentNumber": "401", "fieldOfStudy": "Math", "Count_Student": 0, "active": true}, "book": {"Book_Name": "Old Book", "Author_Name": "Old Author", "Code_Book": "OLD1", "yearPublication": 2001, "quantityAvailable": 3, "Count_Book": 0}, "startDate": "2026-10-01", "endDate": "2026-10-10", "returnDate": null, "returned": false, "approved": false}
+  ]
+}

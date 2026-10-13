@@ -1,32 +1,44 @@
 package project.Library3;
 
-import java.util.Scanner;
+import java.time.LocalDate;
+import java.util.List;
 
+/**
+ * Contract of the pure business-logic layer .
+ * Mutation methods return a String error message ; null means success .
+ * Query methods return data for the GUI to display .
+ */
 public interface LibraryOperations {
-    // for Library
     void saveAllData();
-    // for Student
-    void register_Student();
-    Student login_Student();
-    void searchBook_Student();
-    void requestBorrowBook_Student(Student currentStudent);
-    boolean toggleStudentStatus(String userName);
-    // for Guest
-    void viewStudentCount_Guest();
-    void searchBook_Guest();
-    void viewLibraryStatistics_Guest();
-    // for Librarian
-    Librarian login_Librarian();
-    void changePassword_Librarian(Librarian librarian, Scanner scanner);
-    void addBook_Librarian(Scanner scanner);
-    void searchAndEditeBook_Librarian(Scanner scanner);
-    void approveBorrowRequest_Librarian(Scanner scanner);
-    void toggleStatus_Librarian(Scanner scanner);
-    boolean returnBook(String username ,String bookName);
-    void returnBookBorrowAndSaveReturnDate_Librarian(Scanner scanner);
-    // for Manager
-    void addLibrarian_Manager(Scanner scanner);
-    void showLibrarianReports_Manager(Scanner scanner);
-    void viewBorrowingStatistics_Manager();
-    void viewAllStudentStatistics_Manager();
+
+    // Student
+    String registerStudent(String fullName, String studentNumber,
+                           String fieldOfStudy, String username, String password);
+    Student authenticateStudent(String username, String password);
+    List<Book> searchBooks(String title, String author, Integer year);
+    String requestBorrow(Student student, Book book, LocalDate endDate);
+    List<BorrowRequest> getStudentBorrowHistory(Student student);
+    List<BorrowRequest> getStudentBorrowHistory(String studentUsername);
+    String toggleStudentStatus(String username);
+
+    // Guest
+    int getStudentCount();
+    List<BorrowRequest> getRecentBorrows(int n);
+
+    // Librarian
+    Librarian authenticateLibrarian(String username, String password);
+    String changeLibrarianPassword(Librarian librarian, String oldPassword, String newPassword);
+    String addBook(String code, String name, String author, int year, int copies);
+    Book findBook(String codeOrName);
+    String updateBook(Book book, String newName, String newAuthor,
+                      String newCode, Integer newYear, Integer newCopies);
+    List<BorrowRequest> getPendingBorrowRequests();
+    String approveBorrowRequest(BorrowRequest request);
+    List<BorrowRequest> getActiveBorrows();
+    String returnBook(BorrowRequest request);
+
+    // Manager
+    String addLibrarian(String name, String username, String password);
+    double getAverageBorrowDurationDays();
+    long countApprovedBorrows();
 }
